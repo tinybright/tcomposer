@@ -1,0 +1,33 @@
+{
+  "name": "tinybright/tcomposer",
+  "description": "tinybright-tcomposer",
+  "keywords": [
+    "tcomposer"
+  ],
+  "homepage": "https://github.com/tinybright/tcomposer",
+  "type": "yii2-extension",
+  "license": "MIT",
+  "support": {
+    "source": "https://github.com/tinybright/tcomposer"
+  },
+  "authors": [
+    {
+      "name": "tinybright",
+      "email": "774994940@qq.com"
+    }
+  ],
+  "minimum-stability": "stable",
+  "require": {
+    "php": ">=5.4.0",
+    "yiisoft/yii2": ">=2.0.6"
+   
+  },
+  "autoload": {
+    "psr-4": {
+      "terry\\": ""
+    }
+  },
+  "config": {
+    "process-timeout": 1800
+  }
+}
