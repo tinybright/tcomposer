@@ -15,6 +15,7 @@
       "email": "774994940@qq.com"
     }
   ],
+  "minimum-stability": "stable",
   "autoload": {
     "psr-4": {
       "terry\\": ""
