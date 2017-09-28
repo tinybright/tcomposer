@@ -8,10 +8,10 @@
  * @license http://www.yiiframework.com/license/
  */
 
-Yii::import('application.modules.gen.CCodeGenerator');
-Yii::import('application.modules.gen.CCodeModel');
-Yii::import('application.modules.gen.CCodeFile');
-Yii::import('application.modules.gen.CCodeForm');
+Yii::import('application.vendor.tinybright.tcomposer.gen.CCodeGenerator');
+Yii::import('application.vendor.tinybright.tcomposer.gen.CCodeModel');
+Yii::import('application.vendor.tinybright.tcomposer.gen.CCodeFile');
+Yii::import('application.vendor.tinybright.tcomposer.gen.CCodeForm');
 
 /**
  * GiiModule is a module that provides Web-based code generation capabilities.

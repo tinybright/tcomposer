@@ -147,9 +147,10 @@ class CCodeGenerator extends CController
 	 */
 	protected function prepare()
 	{
-		if($this->codeModel===null)
+		$mode = 'application.vendor.tinybright.tcomposer.'.$this->codeModel;
+		if($mode===null)
 			throw new CException(get_class($this).'.codeModel property must be specified.');
-		$modelClass=Yii::import($this->codeModel,true);
+		$modelClass=Yii::import($mode,true);
 		$model=new $modelClass;
 		$model->loadStickyAttributes();
 		if(isset($_POST[$modelClass]))
