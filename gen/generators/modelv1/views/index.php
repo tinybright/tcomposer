@@ -123,10 +123,7 @@ $('.form .row.model-class').toggle($('#{$class}_tableName').val().substring($('#
 	</div>
 	<div class="row sticky">
 		<?php echo $form->labelEx($model,'baseClass'); ?>
-		<?php echo $form->dropDownList($model,'baseClass',[
-			'CActiveRecord'=>'CActiveRecord',
-			'MenuModel'=>'MenuModel'
-		]); ?>
+		<?php echo $form->textField($model,'baseClass',['value'=>'SCActiveRecord']); ?>
 		<div class="tooltip">
 			This is the class that the new model class will extend from.
 			Please make sure the class exists and can be autoloaded.

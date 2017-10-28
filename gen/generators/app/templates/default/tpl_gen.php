@@ -6,8 +6,8 @@ echo <<<EOF
 EOF;
     foreach ($constants as $constant){
         echo <<<EOF
-    $constant = <?=json_encode(MyStatus::$$constant)?>;
-    window.ARRS.$constant = <?=json_encode(MyStatus::$$constant)?>;
+    $constant = <?=json_encode(Enum::$$constant)?>;
+    window.ARRS.$constant = <?=json_encode(Enum::$$constant)?>;
     
 EOF;
     }

@@ -212,17 +212,17 @@ class CustomCode extends CCodeModel
 			);
 
 
-
-			$this->files[]=new CCodeFile(
-				$this->getViewsPath('layouts',@$this->controller.'.php'),
-				$this->render($templatePath.'/tpl_layout.php',[
-					'app'=>$this->app,
-					'controller'=>$this->controller,
-					'page'=>$this->page,
-					'fields'=>$this->fields,
-					'path'=>'js'.'/'.$this->controller.'/'.'controller'.'/'.$this->page.'.js'
-				])
-			);
+            //已自动
+//			$this->files[]=new CCodeFile(
+//				$this->getViewsPath('layouts',@$this->controller.'.php'),
+//				$this->render($templatePath.'/tpl_layout.php',[
+//					'app'=>$this->app,
+//					'controller'=>$this->controller,
+//					'page'=>$this->page,
+//					'fields'=>$this->fields,
+//					'path'=>'js'.'/'.$this->controller.'/'.'controller'.'/'.$this->page.'.js'
+//				])
+//			);
 
 
 

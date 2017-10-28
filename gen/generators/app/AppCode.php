@@ -66,15 +66,15 @@ class AppCode extends CCodeModel
 		$this->files=array();
 		$templatePath=$this->templatePath;
 
-			$this->files[]=new CCodeFile(
-				$this->getProtectedPath('config','custom.php'),
-				$this->render($templatePath.'/tpl_config_custom.php',[
-					'controller'=>$this->controller,
-					'appname'=>$this->appname,
-					'dbname'=>$this->dbname,
-					'salt'=>$this->salt,
-				])
-			);
+//			$this->files[]=new CCodeFile(
+//				$this->getProtectedPath('config','custom.php'),
+//				$this->render($templatePath.'/tpl_config_custom.php',[
+//					'controller'=>$this->controller,
+//					'appname'=>$this->appname,
+//					'dbname'=>$this->dbname,
+//					'salt'=>$this->salt,
+//				])
+//			);
 		$filterNames = GenUtil::getFilterNames();
 		$this->files[]=new CCodeFile(
 			PathUtil::getJsPath(['base','filter','gen.js']),
@@ -82,12 +82,12 @@ class AppCode extends CCodeModel
 				'constants'=>$filterNames
 			])
 		);
-		$this->files[]=new CCodeFile(
-			PathUtil::getPath(['Constants.java']),
-			$this->render($templatePath.'/tpl_java.php',[
-				'constants'=>$filterNames
-			])
-		);
+//		$this->files[]=new CCodeFile(
+//			PathUtil::getPath(['Constants.java']),
+//			$this->render($templatePath.'/tpl_java.php',[
+//				'constants'=>$filterNames
+//			])
+//		);
 		$this->files[]=new CCodeFile(
 			PathUtil::getProtectedPath(['extensions','modal','views','gen.php']),
 			$this->render($templatePath.'/tpl_gen.php',[

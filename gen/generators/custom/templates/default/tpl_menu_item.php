@@ -1,1 +1,1 @@
-            ['<?=strtolower($objectName)?>',['http://image.lszhushou.com/2016/06/lszs1465799914530.png','images/edit-pwd-white.png','images/edit-pwd-gray.png'],'/data/<?=strtolower($objectName)?>'],
+            ['<?=strtolower($objectName)?>',['images/edit-pwd-white.png','images/edit-pwd-white.png','images/edit-pwd-gray.png'],'/data/<?=strtolower($objectName)?>'],
