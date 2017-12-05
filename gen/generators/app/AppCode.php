@@ -15,15 +15,15 @@ class AppCode extends CCodeModel
 	public function init()
 	{
 		parent::init();
-		$config = $this->getProtectedPath('config','custom.php');
-		require ($config);
+//		$config = $this->getProtectedPath('config','custom.php');
+//		require ($config);
 
-		$this->dbname = !$this->dbname?@$dbName:$this->dbname;
-		$this->appname = !$this->appname ? @$appName:$this->appname;
-		$this->salt = !$this->salt ? @$salt : $this->salt;
-		$this->current_dbname = CheckUtil::getValue($_REQUEST,'dbname',$this->dbname);
-		$this->current_appname = @$appName;
-		$this->current_salt = @$salt;
+//		$this->dbname = !$this->dbname?@$dbName:$this->dbname;
+//		$this->appname = !$this->appname ? @$appName:$this->appname;
+//		$this->salt = !$this->salt ? @$salt : $this->salt;
+//		$this->current_dbname = CheckUtil::getValue($_REQUEST,'dbname',$this->dbname);
+//		$this->current_appname = @$appName;
+//		$this->current_salt = @$salt;
 	}
 
 

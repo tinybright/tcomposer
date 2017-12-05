@@ -1,9 +1,9 @@
 <div> 当前状态</div>
-<div class="info-status">
+<div style="display: none" class="info-status">
 	<div class="status-name">应用名</div>
 	<div class="status-value"><?=@$model->current_appname?></div>
 </div>
-<div class="info-status">
+<div style="display: none" class="info-status">
 	<div class="status-name">数据库</div>
 	<div class="status-value">
 		<?=@$model->current_dbname?>
@@ -31,7 +31,7 @@
 		?>);
 	</div>
 </div>
-<div class="info-status">
+<div style="display: none" class="info-status">
 	<div class="status-name">盐值</div>
 	<div class="status-value"><?=@$model->current_salt?></div>
 </div>

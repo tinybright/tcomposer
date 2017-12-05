@@ -48,7 +48,7 @@
                 <div class="col-sm-8 main-part">
                     <div class="block-content with-padding">
                         <div class="block-empty text-center block-load" ng-show="OC.org.root.empty">
-                            <img src="<?=Images::EMPTY_TIP?>">
+                            <img src="<?=''?>">
                             <!--<div class="loadingtip text-center text-muted" ng-show="SSC.lesson.loading">加载中…</div>-->
                             <div class="pad-top emptytip text-center text-muted" ng-show="OC.org.root.empty">暂无数据,请导入或添加根菜单</div>
                         </div>

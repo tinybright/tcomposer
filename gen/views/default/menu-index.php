@@ -2,13 +2,13 @@
 <div class="header" ng-class="'show'">
     <div class="logo pull-left">
         <a href="<?=Yii::app()->createUrl('/gen/default/index')?>" class="link-logo">
-            <img src="<?=Images::LOGO?>" class="img-logo img-responsive">
+            <img src="<?=''?>" class="img-logo img-responsive">
         </a>
     </div>
     <div class="user pull-right">
         <div class="user-infos">
             <div class="avatar">
-                <img ng-src="{{(Session.user.avatar) ? Session.user.avatar : '<?=Images::DEFAULT_AVATAR?>'}}" class="img-responsive img-avatar">
+                <img ng-src="{{(Session.user.avatar) ? Session.user.avatar : '<?=""?>'}}" class="img-responsive img-avatar">
             </div>
             <div class="user-name text-limit">{{Session.user.name}} <span class="caret"></span></div>
         </div>
@@ -120,6 +120,5 @@
     }
     ?>
     var __USER = <?=$json?>;
-    var __ENDPOINT = "<?=AliyunUtil::$endpoint?>";
     var __ACTION_VERB = <?=json_encode(RightUtil::$ACTION_VERB)?>;
 </script>

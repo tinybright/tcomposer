@@ -53,7 +53,7 @@ $mainBaseUrl = Yii::app()->request->hostInfo.Yii::app()->baseUrl;
 			| <?php /*echo CHtml::link('logout',array('default/logout')); */?>
 		--><?php /*endif; */?>
 		</div>
-		<div id="logo"><?php echo CHtml::link(CHtml::image(@Images::LOGO_ADMIN?($mainBaseUrl.DIRECTORY_SEPARATOR.Images::LOGO_ADMIN):($this->module->assetsUrl.'/images/logo.png')),array('default/index')); ?></div>
+		<div id="logo"><?php echo CHtml::link(CHtml::image(false?($mainBaseUrl.DIRECTORY_SEPARATOR.'false'):($this->module->assetsUrl.'/images/logo.png')),array('default/index')); ?></div>
 	</div><!-- header -->
 
 	<?php echo $content; ?>
