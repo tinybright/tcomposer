@@ -1,9 +1,14 @@
+<style type="text/css">
+    .hidden{
+        display: none!important;
+    }
+</style>
 <div> 当前状态</div>
 <div style="display: none" class="info-status">
 	<div class="status-name">应用名</div>
 	<div class="status-value"><?=@$model->current_appname?></div>
 </div>
-<div style="display: none" class="info-status">
+<div style="display: none" class="info-status hidden">
 	<div class="status-name">数据库</div>
 	<div class="status-value">
 		<?=@$model->current_dbname?>
@@ -37,7 +42,7 @@
 </div>
 <?php $form=$this->beginWidget('CCodeForm', array('model'=>$model)); ?>
 
-	<div class="row">
+	<div class="row hidden">
 		<?php echo $form->labelEx($model,'appname'); ?>
 		<?php echo $form->textField($model,'appname',array('size'=>65,'id'=>'input-appname')); ?>
 		<div class="tooltip">
@@ -46,7 +51,7 @@
 		</div>
 		<?php echo $form->error($model,'appname'); ?>
 	</div>
-	<div class="row">
+	<div class="row hidden">
 		<?php echo $form->labelEx($model,'dbname'); ?>
 		<?php echo $form->textField($model,'dbname',array('size'=>65,'id'=>'input-dbname')); ?>
 		<div>
@@ -62,7 +67,7 @@
 		</div>
 		<?php echo $form->error($model,'dbname'); ?>
 	</div>
-	<div class="row">
+	<div class="row hidden">
 		<?php echo $form->labelEx($model,'salt'); ?>
 		<?php echo $form->textField($model,'salt',array('size'=>65,'id'=>'input-salt')); ?>
 		<div class="tooltip">

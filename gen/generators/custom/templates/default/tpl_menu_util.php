@@ -1,5 +1,5 @@
 <?
-$menuPath = CustomCode::getComponentsPath('MenuUtil.php');
+$menuPath = PathUtil::getPath(['proteced','components','custom','MenuUtil.php']);
 $configContent = file_get_contents($menuPath);
 $templatePath=$this->templatePath;
 

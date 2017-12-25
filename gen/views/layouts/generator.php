@@ -6,7 +6,10 @@ $names = [
 	'custom'=>'页面',
 	'modelv1'=>'模型',
 	'patch'=>'补丁'
-]
+];
+$map = $this->module->controllerMap;
+
+unset($map['patch']);
 ?>
 <div class="container">
 	<div class="span-4">
@@ -15,7 +18,7 @@ $names = [
 			'title'=>'生成器',
 		)); ?>
 			<ul>
-				<?php foreach($this->module->controllerMap as $name=>$config): ?>
+				<?php foreach($map as $name=>$config): ?>
 				<li class="<?=('gen/'.$name.'/index' ==  $this->route)?'active':''?>"><?php echo CHtml::link(ucwords(CHtml::encode(@$names[$name])),array($name.'/index'));?></li>
 				<?php endforeach; ?>
 			</ul>

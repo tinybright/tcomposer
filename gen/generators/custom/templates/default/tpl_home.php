@@ -3,7 +3,8 @@
         background-color: #FAFAFA;
     }
 </style>
-<div class="page-<?=@$page?>-home page">
+
+<div class="page-<?=@$page?>-home page" ng-controller="<?=ucfirst(@$page)?>Controller">
     <ul class="nav nav-tabs" role="tablist">
         <li role="presentation" ng-repeat="tab in TC.tabs" ng-init="TC.autoOpen(tab)" ng-mouseover="colseBtnShow=true" ng-mouseout="colseBtnShow=false">
             <a href="#{{tab.id}}" aria-controls="{{tab.id}}" role="tab" data-toggle="tab">{{tab.label}}</a>

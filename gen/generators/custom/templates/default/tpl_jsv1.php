@@ -1,11 +1,16 @@
+<?
+    $primary = strtoupper($page[0]);
+    $linePage = Utilities::toUnderScore($page);
+    $lowCtrl = strtolower($page);
+?>
 $(function () {
-    var wukongApp = angular.module(_MOUDLE_NAME);
-    if(!wukongApp){
+    var <?=$app."App"?> = angular.module(_MOUDLE_NAME);
+    if(!<?=$app."App"?>){
         console.e("no app");
         return;
     }
-    wukongApp.component("tTestdataList",{
-        templateUrl : "mgr/testdataList",
+    <?=$app."App"?>.component("t<?=ucfirst($page);?>List",{
+        templateUrl : "mgr/<?=$lowCtrl?>List",
         controller : function($scope,$http,Tab,TabCtrl,$rootScope,LoadData,DataSearch,TimeSelect,FormHelper,Helper,$timeout,uiGridConstants, uiGridPaginationService,ModalService){
 
             $(".modal").one("show.bs.modal",function(){
@@ -14,24 +19,24 @@ $(function () {
 
             $scope._LS = $rootScope._LS;
 
-            var TestdataListCenter = {},TLC = TestdataListCenter;
+            var <?=ucfirst($page);?>ListCenter = {},TLC = <?=ucfirst($page);?>ListCenter;
 
-            TLC.grid = {};
-            TLC.grid.options = {};
-            TLC.grid.update  = function (list,sum) {
-                // if(TLC.grid.options){
-                TLC.grid.options.totalItems = sum;
-                TLC.grid.options.data = list;
+            <?=$primary?>LC.grid = {};
+            <?=$primary?>LC.grid.options = {};
+            <?=$primary?>LC.grid.update  = function (list,sum) {
+                // if(<?=$primary?>LC.grid.options){
+                <?=$primary?>LC.grid.options.totalItems = sum;
+                <?=$primary?>LC.grid.options.data = list;
                 // }
             };
-            TLC.grid.init = function () {
+            <?=$primary?>LC.grid.init = function () {
                 var config = {
                     useExternalFiltering: true,
                     enableColumnResizing: true,
                     enableCellEdit: false,
                     enablePinning: true,
                     disableCancelFilterButton: false,
-                    data: TLC.testdataLog.load.itemList,
+                    data: <?=$primary?>LC.<?=$lowCtrl?>Log.load.itemList,
                     enableFiltering: true,
                     showGridFooter:false,
                     enablePagination:true,
@@ -56,7 +61,7 @@ $(function () {
                             field: 'created',
                             displayName: '访问时间',
                             widthName: 6,
-                            timer : "grid.appScope.TLC.testdataLogSearch.search.keywords.created"
+                            timer : "grid.appScope.<?=$primary?>LC.<?=$lowCtrl?>LogSearch.search.keywords.created"
                         }),
                         Helper.UiGridHelper.newInput({
                             enableFiltering: false,
@@ -71,10 +76,10 @@ $(function () {
                         //     enableColumnResizing: false,
                         //     width: 120,
                         //     maxWidth: 2000, minWidth: 120,
-                        //     cellTemplate: '<button type="button" class="btn btn-link" ng-click="grid.appScope.TLC.single.dealAction(row.entity,grid.appScope.TLC.batch.getActionVerb(action),action);" ng-repeat="action in row.entity.actions">{{grid.appScope.TLC.batch.getActionName(action)}}</button>'
+                        //     cellTemplate: '<button type="button" class="btn btn-link" ng-click="grid.appScope.<?=$primary?>LC.single.dealAction(row.entity,grid.appScope.<?=$primary?>LC.batch.getActionVerb(action),action);" ng-repeat="action in row.entity.actions">{{grid.appScope.<?=$primary?>LC.batch.getActionName(action)}}</button>'
                         // },
                         // Helper.UiGridHelper.newLog({
-                        //     click : "grid.appScope.TLC.single.dealAction(row.entity,\'log\');"
+                        //     click : "grid.appScope.<?=$primary?>LC.single.dealAction(row.entity,\'log\');"
                         // })
                     ],
                     //---------------api---------------------
@@ -87,7 +92,7 @@ $(function () {
                             var params = {};
                             // var vipstart = BLC.bdLogSearch.search.keywords.vipstart;
                             // var vipend = BLC.bdLogSearch.search.keywords.vipend;
-                            // angular.forEach($scope.TLC.grid.options.columnDefs, function (col, key) {
+                            // angular.forEach($scope.<?=$primary?>LC.grid.options.columnDefs, function (col, key) {
                             //     if (col.filter) {
                             //         params[col.field] = col.filter.term;
                             //     }
@@ -96,97 +101,97 @@ $(function () {
                             // params.vipend = vipend;
                             // BLC.bdLogSearch.search.keywords = angular.copy(params);
 
-                            TLC.testdataLog.load.pagesize = pageSize;
-                            TLC.testdataLog.load.getPage(newPage);
+                            <?=$primary?>LC.<?=$lowCtrl?>Log.load.pagesize = pageSize;
+                            <?=$primary?>LC.<?=$lowCtrl?>Log.load.getPage(newPage);
                         });
                         gridApi.core.on.filterChanged($scope, function (a, b) {
                             console.log("case3");
 
                             var params = {};
-                            var created = TLC.testdataLogSearch.search.keywords.created;
+                            var created = <?=$primary?>LC.<?=$lowCtrl?>LogSearch.search.keywords.created;
                             // var vipend = BLC.bdLogSearch.search.keywords.vipend;
-                            angular.forEach($scope.TLC.grid.options.columnDefs, function (col, key) {
+                            angular.forEach($scope.<?=$primary?>LC.grid.options.columnDefs, function (col, key) {
                                 if (col.filter) {
                                     params[col.field] = col.filter.term;
                                 }
                             });
                             params.created = created;
                             // params.vipend = vipend;
-                            TLC.testdataLogSearch.search.keywords = angular.copy(params);
+                            <?=$primary?>LC.<?=$lowCtrl?>LogSearch.search.keywords = angular.copy(params);
 
-                            TLC.testdataLogSearch.search.go();
+                            <?=$primary?>LC.<?=$lowCtrl?>LogSearch.search.go();
 
-                            $scope.TLC.grid.options.paginationCurrentPage = 1;
+                            $scope.<?=$primary?>LC.grid.options.paginationCurrentPage = 1;
 
                         });
                     }
                 };
 
-                TLC.grid.options = $.extend({}, Helper.UiGridHelper.COMMON_CONFIG ,config)
+                <?=$primary?>LC.grid.options = $.extend({}, Helper.UiGridHelper.COMMON_CONFIG ,config)
             };
 
-            TLC.testdataLog = new LoadData({
-                loadUrl : "/gettestdatalist",
+            <?=$primary?>LC.<?=$lowCtrl?>Log = new LoadData({
+                loadUrl : "/get<?=$lowCtrl?>list",
                 getParams : function () {
-                    return angular.copy(TLC.testdataLogSearch.search.keywords);
+                    return angular.copy(<?=$primary?>LC.<?=$lowCtrl?>LogSearch.search.keywords);
                 },
                 onLoaded:function(list,page,result){
-                    TLC.grid.update(list,result.data.sum);
+                    <?=$primary?>LC.grid.update(list,result.data.sum);
                 }
             });
-            TLC.testdataLogSearch = new DataSearch({
+            <?=$primary?>LC.<?=$lowCtrl?>LogSearch = new DataSearch({
                 onSearch : function () {
-                    TLC.testdataLog.load.reset();
+                    <?=$primary?>LC.<?=$lowCtrl?>Log.load.reset();
                 },
                 onReset : function(){
                 }
             });
 
-            TLC.testdataLogSearch.search.reset = function(){
-                TLC.testdataLogSearch.search.keywords = {};
+            <?=$primary?>LC.<?=$lowCtrl?>LogSearch.search.reset = function(){
+                <?=$primary?>LC.<?=$lowCtrl?>LogSearch.search.keywords = {};
                 $(".search-time-input").val("");
             }
 
-            TLC.single = {};
-            TLC.single.dealAction = function (testdata,verb) {
-                if ("testdata_edit"==verb){
-                    TLC.editTestdata(testdata.id);
+            <?=$primary?>LC.single = {};
+            <?=$primary?>LC.single.dealAction = function (<?=$lowCtrl?>,verb) {
+                if ("<?=$lowCtrl?>_edit"==verb){
+                    <?=$primary?>LC.edit<?=ucfirst($page);?>(<?=$lowCtrl?>.id);
                     return ;
                 }
-                if ("testdata_delete"==verb){
-                    TLC.deleteTestdata(testdata.id);
+                if ("<?=$lowCtrl?>_delete"==verb){
+                    <?=$primary?>LC.delete<?=ucfirst($page);?>(<?=$lowCtrl?>.id);
                     return ;
                 }
             };
-            TLC.batch = {};
-            TLC.batch.dealAction = function (verb) {
-                var selectedList = TLC.batch.getSelectedList();
+            <?=$primary?>LC.batch = {};
+            <?=$primary?>LC.batch.dealAction = function (verb) {
+                var selectedList = <?=$primary?>LC.batch.getSelectedList();
                 var ids = [];
                 angular.forEach(selectedList,function (value,key) {
                     ids.push(value.id);
                 });
-                if ("testdata_delete"==verb){
-                    TLC.deleteTestdata(ids);
-                    TLC.batch.actions = [];
+                if ("<?=$lowCtrl?>_delete"==verb){
+                    <?=$primary?>LC.delete<?=ucfirst($page);?>(ids);
+                    <?=$primary?>LC.batch.actions = [];
                     return ;
                 }
             }
-            TLC.batch.getActionName = function (action) {
+            <?=$primary?>LC.batch.getActionName = function (action) {
                 var list = action.split("|");
                 return list[0];
             };
-            TLC.batch.getActionVerb = function (action) {
+            <?=$primary?>LC.batch.getActionVerb = function (action) {
                 var list = action.split("|");
                 return list[1];
             };
-            TLC.batch.actions = [];
-            TLC.batch.holderActions = ["删除|delete"];
-            TLC.batch.calcAction = function () {
-                var selectedList = TLC.batch.getSelectedList();
+            <?=$primary?>LC.batch.actions = [];
+            <?=$primary?>LC.batch.holderActions = ["删除|delete"];
+            <?=$primary?>LC.batch.calcAction = function () {
+                var selectedList = <?=$primary?>LC.batch.getSelectedList();
                 var actions = [];
                 if(selectedList && selectedList.length > 0){
                     angular.forEach(selectedList,function (val,key) {
-                         actions.push(val.actions);
+                        actions.push(val.actions);
                     });
                 }
                 var commonList = [];
@@ -198,19 +203,19 @@ $(function () {
                     commonList = angular.copy(ret);
                 }
                 for (var k in commonList){
-                    if ("编辑|testdata_edit" == commonList[k]){
+                    if ("编辑|<?=$lowCtrl?>_edit" == commonList[k]){
                         commonList.splice(k, 1);
                     }
                 }
                 if(commonList && commonList.length){
-                    TLC.batch.actions = angular.copy(commonList);
+                    <?=$primary?>LC.batch.actions = angular.copy(commonList);
                 }else{
-                    TLC.batch.actions = [];
+                    <?=$primary?>LC.batch.actions = [];
                 }
             }
-            TLC.batch.ciList = [];
+            <?=$primary?>LC.batch.ciList = [];
             // batch select
-            TLC.batch.select = function(ci){
+            <?=$primary?>LC.batch.select = function(ci){
                 // 限制 : 同客户 同月份 同还款账户
                 if(!ci._select){
 
@@ -218,52 +223,52 @@ $(function () {
                 //
                 ci._select = !ci._select;
 
-                TLC.batch.calcAction();
+                <?=$primary?>LC.batch.calcAction();
             };
-            TLC.batch.selectAll = function(){
-                if(!TLC.testdataLog.load.itemList || !TLC.testdataLog.load.itemList.length){
+            <?=$primary?>LC.batch.selectAll = function(){
+                if(!<?=$primary?>LC.<?=$lowCtrl?>Log.load.itemList || !<?=$primary?>LC.<?=$lowCtrl?>Log.load.itemList.length){
                     return;
                 }
-                var isAllSelected = TLC.batch.isAllSelected();
-                TLC.testdataLog.load.itemList.forEach(function(ci){
+                var isAllSelected = <?=$primary?>LC.batch.isAllSelected();
+                <?=$primary?>LC.<?=$lowCtrl?>Log.load.itemList.forEach(function(ci){
                     ci._select = !isAllSelected;
                 });
-                TLC.batch.calcAction();
+                <?=$primary?>LC.batch.calcAction();
             };
-            TLC.batch.isAllSelected = function(){
-                if(!TLC.testdataLog.load.itemList || !TLC.testdataLog.load.itemList.length){
+            <?=$primary?>LC.batch.isAllSelected = function(){
+                if(!<?=$primary?>LC.<?=$lowCtrl?>Log.load.itemList || !<?=$primary?>LC.<?=$lowCtrl?>Log.load.itemList.length){
                     return false;
                 }
-                return TLC.testdataLog.load.itemList.every(function(ci){
+                return <?=$primary?>LC.<?=$lowCtrl?>Log.load.itemList.every(function(ci){
                     return ci._select;
                 });
             };
-            TLC.batch.hasSelected = function(){
-                if(!TLC.testdataLog.load.itemList || !TLC.testdataLog.load.itemList.length){
+            <?=$primary?>LC.batch.hasSelected = function(){
+                if(!<?=$primary?>LC.<?=$lowCtrl?>Log.load.itemList || !<?=$primary?>LC.<?=$lowCtrl?>Log.load.itemList.length){
                     return false;
                 }
-                return TLC.testdataLog.load.itemList.some(function(ci){
+                return <?=$primary?>LC.<?=$lowCtrl?>Log.load.itemList.some(function(ci){
                     return ci._select;
                 });
             };
-            TLC.batch.getSelectedList = function(){
-                return TLC.testdataLog.load.itemList.filter(function(ci){
+            <?=$primary?>LC.batch.getSelectedList = function(){
+                return <?=$primary?>LC.<?=$lowCtrl?>Log.load.itemList.filter(function(ci){
                     return ci._select;
                 });
             };
 
-            TLC.addTestdata = function(){
+            <?=$primary?>LC.add<?=ucfirst($page);?> = function(){
                 var addTab = new Tab({
-                    name : "testdata-add",
+                    name : "<?=$lowCtrl?>-add",
                     label : "添加",
                     autoopen : true,
                 });
                 TabCtrl.addTab(addTab);
             };
 
-            TLC.editTestdata = function(id){
+            <?=$primary?>LC.edit<?=ucfirst($page);?> = function(id){
                 var editTab = new Tab({
-                    name : "testdata-edit",
+                    name : "<?=$lowCtrl?>-edit",
                     label : "编辑",
                     autoopen : true,
                     params : {
@@ -274,7 +279,7 @@ $(function () {
                 TabCtrl.addTab(editTab);
             };
 
-            TLC.deleteTestdata = function(id){
+            <?=$primary?>LC.delete<?=ucfirst($page);?> = function(id){
                 if (!confirm("确定删除？")){
                     return ;
                 }
@@ -282,38 +287,38 @@ $(function () {
                     id : id
                 };
                 var params = FormHelper.prepareParams(rawParams);
-                $http.post($rootScope.SERVER+"/deletetestdata", params).then(function(response){
+                $http.post($rootScope.SERVER+"/delete<?=$lowCtrl?>", params).then(function(response){
                     switch(response.data.ret){
                         case "FAIL":
                             $().message(response.data.data);
                             break;
                         case "SUCCESS":
                             $().message("删除成功");
-                            TLC.testdataLogSearch.search.go();
+                            <?=$primary?>LC.<?=$lowCtrl?>LogSearch.search.go();
                             break;
                         default :
                             $().message(MSG_SERVER_ERROR);
                             break;
                     }
                 });
-                TLC.testdataLogSearch.search.go();
+                <?=$primary?>LC.<?=$lowCtrl?>LogSearch.search.go();
             };
 
-            TLC.init = function () {
-                TLC.grid.init();
+            <?=$primary?>LC.init = function () {
+                <?=$primary?>LC.grid.init();
             };
 
-            $scope.$watch("TLC.testdataLogSearch.search.keywords",function () {
-                TLC.testdataLogSearch.search.go();
+            $scope.$watch("<?=$primary?>LC.<?=$lowCtrl?>LogSearch.search.keywords",function () {
+                <?=$primary?>LC.<?=$lowCtrl?>LogSearch.search.go();
             },true);
 
-            TLC.init();
+            <?=$primary?>LC.init();
             $scope.TLC = TLC;
         }
     });
 
-    wukongApp.component("tTestdataAdd",{
-        templateUrl : "mgr/testdataAdd",
+    <?=$app."App"?>.component("t<?=ucfirst($page);?>Add",{
+        templateUrl : "mgr/<?=$lowCtrl?>Add",
         bindings : {
             tab : "=",
         },
@@ -321,20 +326,20 @@ $(function () {
             var ctrl = this;
             ctrl.$onInit = function(){
                 var tab = ctrl.tab;
-                var TestdataAddCenter = {},TAC = TestdataAddCenter;
-                TAC.id = Helper.IdService.genId();
+                var <?=ucfirst($page);?>AddCenter = {},TAC = <?=ucfirst($page);?>AddCenter;
+                <?=$primary?>AC.id = Helper.IdService.genId();
 
-                TAC.info = {};
-                TAC.canEdit = true;
-                TAC.info.photoConfig = {
+                <?=$primary?>AC.info = {};
+                <?=$primary?>AC.canEdit = true;
+                <?=$primary?>AC.info.photoConfig = {
                     uploadType : "image",
                     showDelete : function (obj) {
-                        return TAC.canEdit  && obj && (obj.path || obj.id);
+                        return <?=$primary?>AC.canEdit  && obj && (obj.path || obj.id);
                     }
                 };
 
-                TAC.addTestdata = function(){
-                    $http.post($rootScope.SERVER+"/addtestdata", $("#form-testdata-add").serialize()).then(function(response){
+                <?=$primary?>AC.add<?=ucfirst($page);?> = function(){
+                    $http.post($rootScope.SERVER+"/add<?=$lowCtrl?>", $("#form-<?=$lowCtrl?>-add").serialize()).then(function(response){
                         var result = response.data;
                         switch(result.ret){
                             case "FAIL":
@@ -350,17 +355,17 @@ $(function () {
                     });
                 }
 
-                TAC.addTestdata = function () {
-                    $("#form-testdata-add" + TAC.id).submit();
+                <?=$primary?>AC.add<?=ucfirst($page);?> = function () {
+                    $("#form-<?=$lowCtrl?>-add" + <?=$primary?>AC.id).submit();
                 };
 
-                TAC.init = function () {
-                    TAC.initForm();
+                <?=$primary?>AC.init = function () {
+                    <?=$primary?>AC.initForm();
                 }
 
-                TAC.initForm = function () {
-                    var form =  $("#form-testdata-add" + TAC.id);
-                    var btn = $("#btn-testdata-add" + TAC.id);
+                <?=$primary?>AC.initForm = function () {
+                    var form =  $("#form-<?=$lowCtrl?>-add" + <?=$primary?>AC.id);
+                    var btn = $("#btn-<?=$lowCtrl?>-add" + <?=$primary?>AC.id);
                     if(form && form.length && btn && btn.length){
                         form.submit(function () {
                             var form = $(this);
@@ -385,23 +390,23 @@ $(function () {
                             return false;
                         });
                     }else{
-                        $timeout(TAC.initForm,_ID_POLL_INTERVAL);
+                        $timeout(<?=$primary?>AC.initForm,_ID_POLL_INTERVAL);
                     }
                 }
 
-                TAC.close = function(){
+                <?=$primary?>AC.close = function(){
                     TabCtrl.closeTab(tab);
                 };
 
-                TAC.init();
-                
+                <?=$primary?>AC.init();
+
                 $scope.TAC = TAC;
             }
         }
     });
 
-    wukongApp.component("tTestdataEdit",{
-        templateUrl : "mgr/testdataEdit",
+    <?=$app."App"?>.component("t<?=ucfirst($page);?>Edit",{
+        templateUrl : "mgr/<?=$lowCtrl?>Edit",
         bindings : {
             tab : "=",
         },
@@ -410,21 +415,21 @@ $(function () {
             ctrl.$onInit = function(){
                 var tab = ctrl.tab;
                 var params = tab.params;
-                var TestdataEditCenter = {},TEC = TestdataEditCenter;
-                TEC.id = Helper.IdService.genId();
+                var <?=ucfirst($page);?>EditCenter = {},TEC = <?=ucfirst($page);?>EditCenter;
+                <?=$primary?>EC.id = Helper.IdService.genId();
 
-                $http.get($rootScope.SERVER+"/gettestdatadetail", {params: params}).then(function(response){
+                $http.get($rootScope.SERVER+"/get<?=$lowCtrl?>detail", {params: params}).then(function(response){
                     var result = response.data;
                     switch(result.ret){
                         case "FAIL":
                             $().message(result.data);
                             break;
                         case "SUCCESS":
-                            TEC.info = result.data;
-                            TEC.info.photoConfig = {
+                            <?=$primary?>EC.info = result.data;
+                            <?=$primary?>EC.info.photoConfig = {
                                 uploadType : "image",
                                 showDelete : function (obj) {
-                                    return TEC.canEdit  && obj &&(obj.path || obj.id);
+                                    return <?=$primary?>EC.canEdit  && obj &&(obj.path || obj.id);
                                 }
                             };
                             break;
@@ -434,20 +439,20 @@ $(function () {
                     }
                 });
 
-                TEC.editTestdata = function () {
+                <?=$primary?>EC.edit<?=ucfirst($page);?> = function () {
                     if (!confirm("确认修改？")){
                         return ;
                     }
-                    $("#form-testdata-edit"+TEC.id).submit();
+                    $("#form-<?=$lowCtrl?>-edit"+<?=$primary?>EC.id).submit();
                 };
 
-                TEC.init = function () {
-                    TEC.initForm();
+                <?=$primary?>EC.init = function () {
+                    <?=$primary?>EC.initForm();
                 }
 
-                TEC.initForm = function () {
-                    var form =  $("#form-testdata-edit" + TEC.id);
-                    var btn = $("#btn-testdata-edit" + TEC.id);
+                <?=$primary?>EC.initForm = function () {
+                    var form =  $("#form-<?=$lowCtrl?>-edit" + <?=$primary?>EC.id);
+                    var btn = $("#btn-<?=$lowCtrl?>-edit" + <?=$primary?>EC.id);
                     if(form && form.length && btn && btn.length){
                         form.submit(function () {
                             var form = $(this);
@@ -462,7 +467,7 @@ $(function () {
                                             break;
                                         case "SUCCESS":
                                             $().message("编辑成功");
-                                            TEC.canEdit = true;
+                                            <?=$primary?>EC.canEdit = true;
                                             break;
                                         default:
                                             $().message(MSG_SERVER_ERROR);
@@ -473,13 +478,13 @@ $(function () {
                             return false;
                         });
                     }else{
-                        $timeout(TEC.initForm,_ID_POLL_INTERVAL);
+                        $timeout(<?=$primary?>EC.initForm,_ID_POLL_INTERVAL);
                     }
                 }
 
-                TEC.init();
+                <?=$primary?>EC.init();
 
-                TEC.close = function(){
+                <?=$primary?>EC.close = function(){
                     TabCtrl.closeTab(tab);
                 };
 
@@ -488,24 +493,24 @@ $(function () {
         }
     });
 
-    wukongApp.controller("TestdataController",function($scope,Tab,TabCtrl){
-        var TestdataHomeCenter = {},THC = TestdataHomeCenter;
+    <?=$app."App"?>.controller("<?=ucfirst($page);?>Controller",function($scope,Tab,TabCtrl){
+        var <?=ucfirst($page);?>HomeCenter = {},THC = <?=ucfirst($page);?>HomeCenter;
 
-        THC.initList = function(){
+        <?=$primary?>HC.initList = function(){
             var listTab = new Tab({
-                name : "testdata-list",
+                name : "<?=$lowCtrl?>-list",
                 label : "列表",
                 closeable : false,
             });
             TabCtrl.addTab(listTab);
         };
-        THC.init = function(){
-            THC.initList();
+        <?=$primary?>HC.init = function(){
+            <?=$primary?>HC.initList();
         };
 
         $scope.TC = TabCtrl;
         $scope.THC = THC;
 
-        THC.init();
+        <?=$primary?>HC.init();
     });
 });

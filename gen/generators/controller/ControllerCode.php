@@ -109,8 +109,9 @@ class ControllerCode extends CCodeModel
 		);
 
 		//MenuUtil
+        $menuPath = PathUtil::getPath(['proteced','components','custom','MenuUtil.php']);
 		$this->files[]=new CCodeFile(
-			$this->getComponentsPath('MenuUtil.php'),
+            $menuPath,
 			$this->render($templatePath.'/components/tpl_menu_util.php',$params)
 		);
 		//SessionFilter

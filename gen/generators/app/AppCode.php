@@ -31,7 +31,7 @@ class AppCode extends CCodeModel
 	{
 		return array_merge(parent::rules(), array(
 			array('appname, dbname ,salt', 'filter', 'filter'=>'trim'),
-			array('appname, dbname ,salt',  'required'),
+//			array('appname, dbname ,salt',  'required'),
 		));
 	}
 

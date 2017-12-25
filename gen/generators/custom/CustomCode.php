@@ -180,7 +180,7 @@ class CustomCode extends CCodeModel
 			//转到 js-new 使用模板testdata.js;
 			$this->files[]=new CCodeFile(
 				$this->getJsFile(strtolower($action).''),
-				$this->render($templatePath.'/tpl_js.php',[
+				$this->render($templatePath.'/tpl_jsv1.php',[
 					'app'=>$this->app,
 					'controller'=>$this->controller,
 					'page'=>$this->page,
@@ -188,28 +188,29 @@ class CustomCode extends CCodeModel
 					'btn_import'=>$this->btn_import
 				])
 			);
+            //todo skip
+//			$this->files[]=new CCodeFile(
+//				$this->getComponentsPath('MenuUtil.php'),
+//				$this->render($templatePath.'/tpl_menu_util.php',[
+//					'app'=>$this->app,
+//					'controller'=>$this->controller,
+//					'page'=>$this->page,
+//					'fields'=>$this->fields,
+//				])
+//			);
 
-			$this->files[]=new CCodeFile(
-				$this->getComponentsPath('MenuUtil.php'),
-				$this->render($templatePath.'/tpl_menu_util.php',[
-					'app'=>$this->app,
-					'controller'=>$this->controller,
-					'page'=>$this->page,
-					'fields'=>$this->fields,
-				])
-			);
 
+        //已自动
 
-
-			$this->files[]=new CCodeFile(
-				$this->getJsPath(@$this->controller,'app','config.js'),
-				$this->render($templatePath.'/tpl_config.php',[
-					'app'=>$this->app,
-					'controller'=>$this->controller,
-					'page'=>$this->page,
-					'fields'=>$this->fields,
-				])
-			);
+//			$this->files[]=new CCodeFile(
+//				$this->getJsPath(@$this->controller,'app','config.js'),
+//				$this->render($templatePath.'/tpl_config.php',[
+//					'app'=>$this->app,
+//					'controller'=>$this->controller,
+//					'page'=>$this->page,
+//					'fields'=>$this->fields,
+//				])
+//			);
 
 
             //已自动
@@ -240,6 +241,9 @@ class CustomCode extends CCodeModel
 		];
 
 		//service
+        if(true){
+            return;
+        }
 		$targetBasePath = PathUtil::getCompoPath();
 		foreach ($compoFiles as $file){
 			if(Utilities::contain($file,'Holder')){
@@ -330,13 +334,14 @@ class CustomCode extends CCodeModel
 			);
 		}*/
 
+		//todo skip
 		//api
-		$targetApiFile = PathUtil::getControllerPath(ucfirst($this->controller).'apiController.php');
-		$tplApiFile = $templatePath.DIRECTORY_SEPARATOR.'tpl_api.php';
-		$this->files[]=new CCodeFile(
-			$targetApiFile,
-			$this->render($tplApiFile,$params)
-		);
+//		$targetApiFile = PathUtil::getControllerPath(ucfirst($this->controller).'apiController.php');
+//		$tplApiFile = $templatePath.DIRECTORY_SEPARATOR.'tpl_api.php';
+//		$this->files[]=new CCodeFile(
+//			$targetApiFile,
+//			$this->render($tplApiFile,$params)
+//		);
 
 	}
 
