@@ -23,7 +23,7 @@ DROP TABLE IF EXISTS `b_user`;
 CREATE TABLE `b_user` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `username` varchar(100) DEFAULT NULL COMMENT '用户名',
-  `password` varchar(100) DEFAULT NULL COMMENT '密码',
+  `pwd` varchar(100) DEFAULT NULL COMMENT '密码',
   `mobile` varchar(100) DEFAULT NULL COMMENT '手机号',
   `realname` varchar(100) DEFAULT NULL COMMENT '姓名',
   `avatar` VARCHAR(100) DEFAULT NULL COMMENT '头像',

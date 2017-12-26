@@ -1,42 +1,37 @@
-<?
-    $primary = strtoupper($page[0]);
-    $linePage = Utilities::toUnderScore($page);
-    $lowCtrl = strtolower($page);
-?>
 $(function () {
-    var <?=$app."App"?> = angular.module(_MOUDLE_NAME);
-    if(!<?=$app."App"?>){
+    var wukongApp = angular.module(_MOUDLE_NAME);
+    if(!wukongApp){
         console.e("no app");
         return;
     }
-    <?=$app."App"?>.component("t<?=ucfirst($page);?>List",{
-        templateUrl : "mgr/<?=$lowCtrl?>List",
-        controller : function($scope,$http,Tab,TabCtrl,$rootScope,LoadData,DataSearch,TimeSelect,FormHelper,Helper,$timeout,uiGridConstants, uiGridPaginationService,ModalService){
+    wukongApp.component("tEventList",{
+        templateUrl : "mgr/eventList",
+        controller : function($scope,$http,Tab,TabCtrl,$rootScope,LoadData,DataSearch,TimeSelect,FormHelper,Helper,$timeout,uiGridConstants, uiGridPaginationService,ModalService,ScrollLoad,$window,DelayService){
 
             $(".modal").one("show.bs.modal",function(){
                 $(this).appendTo("body");
             });
 
             $scope._LS = $rootScope._LS;
-
-            var <?=ucfirst($page);?>ListCenter = {},<?=$primary?>LC = <?=ucfirst($page);?>ListCenter;
-
-            <?=$primary?>LC.grid = {};
-            <?=$primary?>LC.grid.options = {};
-            <?=$primary?>LC.grid.update  = function (list,sum) {
-                // if(<?=$primary?>LC.grid.options){
-                <?=$primary?>LC.grid.options.totalItems = sum;
-                <?=$primary?>LC.grid.options.data = list;
+            $scope.ARRS = $rootScope.ARRS;
+            var EventListCenter = {},ELC = EventListCenter;
+            ELC.id = Helper.IdService.genId();
+            ELC.grid = {};
+            ELC.grid.options = {};
+            ELC.grid.update  = function (list,sum) {
+                // if(ELC.grid.options){
+                ELC.grid.options.totalItems = sum;
+                ELC.grid.options.data = list;
                 // }
             };
-            <?=$primary?>LC.grid.init = function () {
+            ELC.grid.init = function () {
                 var config = {
                     useExternalFiltering: true,
                     enableColumnResizing: true,
                     enableCellEdit: false,
                     enablePinning: true,
                     disableCancelFilterButton: false,
-                    data: <?=$primary?>LC.<?=$lowCtrl?>Log.load.itemList,
+                    data: ELC.eventLog.load.itemList,
                     enableFiltering: true,
                     showGridFooter:false,
                     enablePagination:true,
@@ -61,7 +56,7 @@ $(function () {
                             field: 'created',
                             displayName: '访问时间',
                             widthName: 6,
-                            timer : "grid.appScope.<?=$primary?>LC.<?=$lowCtrl?>LogSearch.search.keywords.created"
+                            timer : "grid.appScope.ELC.eventLogSearch.search.keywords.created"
                         }),
                         Helper.UiGridHelper.newInput({
                             enableFiltering: false,
@@ -76,10 +71,10 @@ $(function () {
                         //     enableColumnResizing: false,
                         //     width: 120,
                         //     maxWidth: 2000, minWidth: 120,
-                        //     cellTemplate: '<button type="button" class="btn btn-link" ng-click="grid.appScope.<?=$primary?>LC.single.dealAction(row.entity,grid.appScope.<?=$primary?>LC.batch.getActionVerb(action),action);" ng-repeat="action in row.entity.actions">{{grid.appScope.<?=$primary?>LC.batch.getActionName(action)}}</button>'
+                        //     cellTemplate: '<button type="button" class="btn btn-link" ng-click="grid.appScope.ELC.single.dealAction(row.entity,grid.appScope.ELC.batch.getActionVerb(action),action);" ng-repeat="action in row.entity.actions">{{grid.appScope.ELC.batch.getActionName(action)}}</button>'
                         // },
                         // Helper.UiGridHelper.newLog({
-                        //     click : "grid.appScope.<?=$primary?>LC.single.dealAction(row.entity,\'log\');"
+                        //     click : "grid.appScope.ELC.single.dealAction(row.entity,\'log\');"
                         // })
                     ],
                     //---------------api---------------------
@@ -92,7 +87,7 @@ $(function () {
                             var params = {};
                             // var vipstart = BLC.bdLogSearch.search.keywords.vipstart;
                             // var vipend = BLC.bdLogSearch.search.keywords.vipend;
-                            // angular.forEach($scope.<?=$primary?>LC.grid.options.columnDefs, function (col, key) {
+                            // angular.forEach($scope.ELC.grid.options.columnDefs, function (col, key) {
                             //     if (col.filter) {
                             //         params[col.field] = col.filter.term;
                             //     }
@@ -101,93 +96,189 @@ $(function () {
                             // params.vipend = vipend;
                             // BLC.bdLogSearch.search.keywords = angular.copy(params);
 
-                            <?=$primary?>LC.<?=$lowCtrl?>Log.load.pagesize = pageSize;
-                            <?=$primary?>LC.<?=$lowCtrl?>Log.load.getPage(newPage);
+                            ELC.eventLog.load.pagesize = pageSize;
+                            ELC.eventLog.load.getPage(newPage);
                         });
                         gridApi.core.on.filterChanged($scope, function (a, b) {
                             console.log("case3");
 
                             var params = {};
-                            var created = <?=$primary?>LC.<?=$lowCtrl?>LogSearch.search.keywords.created;
+                            var created = ELC.eventLogSearch.search.keywords.created;
                             // var vipend = BLC.bdLogSearch.search.keywords.vipend;
-                            angular.forEach($scope.<?=$primary?>LC.grid.options.columnDefs, function (col, key) {
+                            angular.forEach($scope.ELC.grid.options.columnDefs, function (col, key) {
                                 if (col.filter) {
                                     params[col.field] = col.filter.term;
                                 }
                             });
                             params.created = created;
                             // params.vipend = vipend;
-                            <?=$primary?>LC.<?=$lowCtrl?>LogSearch.search.keywords = angular.copy(params);
+                            ELC.eventLogSearch.search.keywords = angular.copy(params);
 
-                            <?=$primary?>LC.<?=$lowCtrl?>LogSearch.search.go();
+                            ELC.eventLogSearch.search.go();
 
-                            $scope.<?=$primary?>LC.grid.options.paginationCurrentPage = 1;
+                            $scope.ELC.grid.options.paginationCurrentPage = 1;
 
                         });
                     }
                 };
 
-                <?=$primary?>LC.grid.options = $.extend({}, Helper.UiGridHelper.COMMON_CONFIG ,config)
+                ELC.grid.options = $.extend({}, Helper.UiGridHelper.COMMON_CONFIG ,config)
             };
 
-            <?=$primary?>LC.<?=$lowCtrl?>Log = new LoadData({
-                loadUrl : "/get<?=$lowCtrl?>list",
+            ELC.eventLog = new LoadData({
+                pagesize :5,
+                loadMode:"scroll",
+                loadUrl : "/getEventList",
                 getParams : function () {
-                    return angular.copy(<?=$primary?>LC.<?=$lowCtrl?>LogSearch.search.keywords);
+                    var params =  angular.copy(ELC.eventLogSearch.search.keywords);
+                    params.mode = ELC.mode;
+                    return params;
                 },
                 onLoaded:function(list,page,result){
-                    <?=$primary?>LC.grid.update(list,result.data.sum);
+                    ELC.grid.update(list,result.data.sum);
                 }
             });
-            <?=$primary?>LC.<?=$lowCtrl?>LogSearch = new DataSearch({
+            ELC.resetList = _.debounce(
+                function () {
+                    console.log("done");
+                    ELC.eventLogSearch.search.go();
+                    return "111";
+                },
+                500
+            );
+
+            ELC.eventLogSearch = new DataSearch({
                 onSearch : function () {
-                    <?=$primary?>LC.<?=$lowCtrl?>Log.load.reset();
+                    ELC.eventLog.load.reset();
                 },
                 onReset : function(){
                 }
             });
 
-            <?=$primary?>LC.<?=$lowCtrl?>LogSearch.search.reset = function(){
-                <?=$primary?>LC.<?=$lowCtrl?>LogSearch.search.keywords = {};
+            ELC.eventLogSearch.search.keywords.period = "";
+            ELC.mode = "period";
+            ELC.openPeriod  = function () {
+                ELC.mode = "period";
+            };
+            ELC.date = {};
+            ELC.date.getDayClass = function(data) {
+                var date = data.date,
+                    mode = data.mode;
+                if (mode === 'day') {
+                    var dayToCheck = new Date(date).setHours(0,0,0,0);
+
+                    // for (var i = 0; i < $scope.events.length; i++) {
+                    //     var currentDay = new Date($scope.events[i].date).setHours(0,0,0,0);
+                    //
+                    //     if (dayToCheck === currentDay) {
+                    //         return $scope.events[i].status;
+                    //     }
+                    // }
+                }
+
+                return '';
+            }
+            // ELC.eventLogSearch.search.keywords = new Date();
+            ELC.date.current_date = null;
+            ELC.date.today = function () {
+                ELC.date.current_date = new Date();
+            };
+            ELC.date.clear = function () {
+                ELC.date.current_date = null;
+            };
+            ELC.date.disabled = function(data) {
+                if(true){
+                    return false;
+                }
+                var date = data.date,
+                    mode = data.mode;
+                return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
+            };
+            ELC.date.dateOptions = {
+                dateDisabled: ELC.date.disabled,
+                formatYear: 'yy',
+                maxDate: new Date(2020, 5, 22),
+                minDate: new Date(1980,1,1),
+                startingDay: 1
+            };
+            ELC.date.opened = false;
+            ELC.date.format = "yyyy-MM-dd";
+            ELC.date.open = function () {
+                ELC.mode = "date";
+                ELC.date.opened = true;
+            }
+            ELC.date.init = function () {
+
+            };
+
+            $scope.inlineOptions = {
+                customClass: ELC.date.getDayClass,
+                minDate: new Date(),
+                showWeeks: true
+            };
+
+            $scope.setDate = function(year, month, day) {
+                $scope.dt = new Date(year, month, day);
+            };
+
+            ELC.date.altInputFormats = ['M!/d!/yyyy'];
+
+            // var tomorrow = new Date();
+            // tomorrow.setDate(tomorrow.getDate() + 1);
+            // var afterTomorrow = new Date();
+            // afterTomorrow.setDate(tomorrow.getDate() + 1);
+            // $scope.events = [
+            //     {
+            //         date: tomorrow,
+            //         status: 'full'
+            //     },
+            //     {
+            //         date: afterTomorrow,
+            //         status: 'partially'
+            //     }
+            // ];
+
+            ELC.eventLogSearch.search.reset = function(){
+                ELC.eventLogSearch.search.keywords = {};
                 $(".search-time-input").val("");
             }
 
-            <?=$primary?>LC.single = {};
-            <?=$primary?>LC.single.dealAction = function (<?=$lowCtrl?>,verb) {
-                if ("<?=$lowCtrl?>_edit"==verb){
-                    <?=$primary?>LC.edit<?=ucfirst($page);?>(<?=$lowCtrl?>.id);
+            ELC.single = {};
+            ELC.single.dealAction = function (event,verb) {
+                if ("event_edit"==verb){
+                    ELC.editEvent(event.id);
                     return ;
                 }
-                if ("<?=$lowCtrl?>_delete"==verb){
-                    <?=$primary?>LC.delete<?=ucfirst($page);?>(<?=$lowCtrl?>.id);
+                if ("event_delete"==verb){
+                    ELC.deleteEvent(event.id);
                     return ;
                 }
             };
-            <?=$primary?>LC.batch = {};
-            <?=$primary?>LC.batch.dealAction = function (verb) {
-                var selectedList = <?=$primary?>LC.batch.getSelectedList();
+            ELC.batch = {};
+            ELC.batch.dealAction = function (verb) {
+                var selectedList = ELC.batch.getSelectedList();
                 var ids = [];
                 angular.forEach(selectedList,function (value,key) {
                     ids.push(value.id);
                 });
-                if ("<?=$lowCtrl?>_delete"==verb){
-                    <?=$primary?>LC.delete<?=ucfirst($page);?>(ids);
-                    <?=$primary?>LC.batch.actions = [];
+                if ("event_delete"==verb){
+                    ELC.deleteEvent(ids);
+                    ELC.batch.actions = [];
                     return ;
                 }
             }
-            <?=$primary?>LC.batch.getActionName = function (action) {
+            ELC.batch.getActionName = function (action) {
                 var list = action.split("|");
                 return list[0];
             };
-            <?=$primary?>LC.batch.getActionVerb = function (action) {
+            ELC.batch.getActionVerb = function (action) {
                 var list = action.split("|");
                 return list[1];
             };
-            <?=$primary?>LC.batch.actions = [];
-            <?=$primary?>LC.batch.holderActions = ["删除|delete"];
-            <?=$primary?>LC.batch.calcAction = function () {
-                var selectedList = <?=$primary?>LC.batch.getSelectedList();
+            ELC.batch.actions = [];
+            ELC.batch.holderActions = ["删除|delete"];
+            ELC.batch.calcAction = function () {
+                var selectedList = ELC.batch.getSelectedList();
                 var actions = [];
                 if(selectedList && selectedList.length > 0){
                     angular.forEach(selectedList,function (val,key) {
@@ -203,19 +294,19 @@ $(function () {
                     commonList = angular.copy(ret);
                 }
                 for (var k in commonList){
-                    if ("编辑|<?=$lowCtrl?>_edit" == commonList[k]){
+                    if ("编辑|event_edit" == commonList[k]){
                         commonList.splice(k, 1);
                     }
                 }
                 if(commonList && commonList.length){
-                    <?=$primary?>LC.batch.actions = angular.copy(commonList);
+                    ELC.batch.actions = angular.copy(commonList);
                 }else{
-                    <?=$primary?>LC.batch.actions = [];
+                    ELC.batch.actions = [];
                 }
             }
-            <?=$primary?>LC.batch.ciList = [];
+            ELC.batch.ciList = [];
             // batch select
-            <?=$primary?>LC.batch.select = function(ci){
+            ELC.batch.select = function(ci){
                 // 限制 : 同客户 同月份 同还款账户
                 if(!ci._select){
 
@@ -223,63 +314,72 @@ $(function () {
                 //
                 ci._select = !ci._select;
 
-                <?=$primary?>LC.batch.calcAction();
+                ELC.batch.calcAction();
             };
-            <?=$primary?>LC.batch.selectAll = function(){
-                if(!<?=$primary?>LC.<?=$lowCtrl?>Log.load.itemList || !<?=$primary?>LC.<?=$lowCtrl?>Log.load.itemList.length){
+            ELC.batch.selectAll = function(){
+                if(!ELC.eventLog.load.itemList || !ELC.eventLog.load.itemList.length){
                     return;
                 }
-                var isAllSelected = <?=$primary?>LC.batch.isAllSelected();
-                <?=$primary?>LC.<?=$lowCtrl?>Log.load.itemList.forEach(function(ci){
+                var isAllSelected = ELC.batch.isAllSelected();
+                ELC.eventLog.load.itemList.forEach(function(ci){
                     ci._select = !isAllSelected;
                 });
-                <?=$primary?>LC.batch.calcAction();
+                ELC.batch.calcAction();
             };
-            <?=$primary?>LC.batch.isAllSelected = function(){
-                if(!<?=$primary?>LC.<?=$lowCtrl?>Log.load.itemList || !<?=$primary?>LC.<?=$lowCtrl?>Log.load.itemList.length){
+            ELC.batch.isAllSelected = function(){
+                if(!ELC.eventLog.load.itemList || !ELC.eventLog.load.itemList.length){
                     return false;
                 }
-                return <?=$primary?>LC.<?=$lowCtrl?>Log.load.itemList.every(function(ci){
+                return ELC.eventLog.load.itemList.every(function(ci){
                     return ci._select;
                 });
             };
-            <?=$primary?>LC.batch.hasSelected = function(){
-                if(!<?=$primary?>LC.<?=$lowCtrl?>Log.load.itemList || !<?=$primary?>LC.<?=$lowCtrl?>Log.load.itemList.length){
+            ELC.batch.hasSelected = function(){
+                if(!ELC.eventLog.load.itemList || !ELC.eventLog.load.itemList.length){
                     return false;
                 }
-                return <?=$primary?>LC.<?=$lowCtrl?>Log.load.itemList.some(function(ci){
+                return ELC.eventLog.load.itemList.some(function(ci){
                     return ci._select;
                 });
             };
-            <?=$primary?>LC.batch.getSelectedList = function(){
-                return <?=$primary?>LC.<?=$lowCtrl?>Log.load.itemList.filter(function(ci){
+            ELC.batch.getSelectedList = function(){
+                return ELC.eventLog.load.itemList.filter(function(ci){
                     return ci._select;
                 });
             };
 
-            <?=$primary?>LC.add<?=ucfirst($page);?> = function(){
+            ELC.addEvent = function(){
                 var addTab = new Tab({
-                    name : "<?=$lowCtrl?>-add",
+                    name : "event-add",
                     label : "添加",
                     autoopen : true,
+                    params : {
+                        resetList:function(){
+
+                            ELC.resetList();
+                        }
+                    }
                 });
                 TabCtrl.addTab(addTab);
             };
 
-            <?=$primary?>LC.edit<?=ucfirst($page);?> = function(id){
+            ELC.editEvent = function(id){
                 var editTab = new Tab({
-                    name : "<?=$lowCtrl?>-edit",
+                    name : "event-edit",
                     label : "编辑",
                     autoopen : true,
                     params : {
                         id : id,
                         noclose : true,
+                        resetList:function(){
+                            ELC.resetList();
+                        }
                     }
                 });
                 TabCtrl.addTab(editTab);
             };
 
-            <?=$primary?>LC.delete<?=ucfirst($page);?> = function(id){
+            ELC.deleteEvent = function(id){
                 if (!confirm("确定删除？")){
                     return ;
                 }
@@ -287,38 +387,65 @@ $(function () {
                     id : id
                 };
                 var params = FormHelper.prepareParams(rawParams);
-                $http.post($rootScope.SERVER+"/delete<?=$lowCtrl?>", params).then(function(response){
+                $http.post($rootScope.SERVER+"/deleteEvent", params).then(function(response){
                     switch(response.data.ret){
                         case "FAIL":
                             $().message(response.data.data);
                             break;
                         case "SUCCESS":
                             $().message("删除成功");
-                            <?=$primary?>LC.<?=$lowCtrl?>LogSearch.search.go();
+                            ELC.eventLogSearch.search.go();
                             break;
                         default :
                             $().message(MSG_SERVER_ERROR);
                             break;
                     }
                 });
-                <?=$primary?>LC.<?=$lowCtrl?>LogSearch.search.go();
+                ELC.eventLogSearch.search.go();
+            };
+            ELC.getHeight = function () {
+                var winowHeight = $window.innerHeight; //获取窗口高度
+                var content_padding = 6*2;
+                var header_height = 50;
+                var tab_height  = 42;
+                var page_padding = 10*2;
+                var action_height = 32;
+                var action_padding = 21;
+                var scorll_con_margin = 10;
+                var fix_padding = 10;
+
+                return winowHeight - content_padding - header_height - tab_height - page_padding - action_height - action_padding - scorll_con_margin - fix_padding;
+            };
+            ELC.init = function () {
+
+
+                new DelayService().init({
+                    selector : "#event-con-"+ELC.id,
+                    done:function () {
+                        ScrollLoad.init({
+                            parent: $("#event-con-"+ELC.id),
+                            load : function(){
+                                ELC.eventLog.load.getPage(ELC.eventLog.load.page + 1);
+                            }
+                        });
+                    }
+                })
             };
 
-            <?=$primary?>LC.init = function () {
-                <?=$primary?>LC.grid.init();
-            };
-
-            $scope.$watch("<?=$primary?>LC.<?=$lowCtrl?>LogSearch.search.keywords",function () {
-                <?=$primary?>LC.<?=$lowCtrl?>LogSearch.search.go();
+            $scope.$watch("ELC.eventLogSearch.search.keywords",function () {
+                console.log("try do");
+                ELC.resetList();
             },true);
-
-            <?=$primary?>LC.init();
-            $scope.<?=$primary?>LC = <?=$primary?>LC;
+            $scope.$watch("ELC.date.current_date",function (newVal) {
+                ELC.eventLogSearch.search.keywords.date = ELC.date.current_date ? ELC.date.current_date.format("yyyy-MM-dd"):"";
+            });
+            ELC.init();
+            $scope.ELC = ELC;
         }
     });
 
-    <?=$app."App"?>.component("t<?=ucfirst($page);?>Add",{
-        templateUrl : "mgr/<?=$lowCtrl?>Add",
+    wukongApp.component("tEventAdd",{
+        templateUrl : "mgr/eventAdd",
         bindings : {
             tab : "=",
         },
@@ -326,20 +453,20 @@ $(function () {
             var ctrl = this;
             ctrl.$onInit = function(){
                 var tab = ctrl.tab;
-                var <?=ucfirst($page);?>AddCenter = {},<?=$primary?>AC = <?=ucfirst($page);?>AddCenter;
-                <?=$primary?>AC.id = Helper.IdService.genId();
-
-                <?=$primary?>AC.info = {};
-                <?=$primary?>AC.canEdit = true;
-                <?=$primary?>AC.info.photoConfig = {
+                var EventAddCenter = {},EAC = EventAddCenter;
+                EAC.id = Helper.IdService.genId();
+                $scope.ARRS = $rootScope.ARRS;
+                EAC.info = {};
+                EAC.canEdit = true;
+                EAC.info.photoConfig = {
                     uploadType : "image",
                     showDelete : function (obj) {
-                        return <?=$primary?>AC.canEdit  && obj && (obj.path || obj.id);
+                        return EAC.canEdit  && obj && (obj.path || obj.id);
                     }
                 };
 
-                <?=$primary?>AC.add<?=ucfirst($page);?> = function(){
-                    $http.post($rootScope.SERVER+"/add<?=$lowCtrl?>", $("#form-<?=$lowCtrl?>-add").serialize()).then(function(response){
+                EAC.addEvent = function(){
+                    $http.post($rootScope.SERVER+"/addEvent", $("#form-event-add").serialize()).then(function(response){
                         var result = response.data;
                         switch(result.ret){
                             case "FAIL":
@@ -347,6 +474,7 @@ $(function () {
                                 break;
                             case "SUCCESS":
                                 $().message("添加成功");
+
                                 break;
                             default :
                                 $().message(MSG_SERVER_ERROR);
@@ -355,17 +483,17 @@ $(function () {
                     });
                 }
 
-                <?=$primary?>AC.add<?=ucfirst($page);?> = function () {
-                    $("#form-<?=$lowCtrl?>-add" + <?=$primary?>AC.id).submit();
+                EAC.addEvent = function () {
+                    $("#form-event-add" + EAC.id).submit();
                 };
 
-                <?=$primary?>AC.init = function () {
-                    <?=$primary?>AC.initForm();
+                EAC.init = function () {
+                    EAC.initForm();
                 }
 
-                <?=$primary?>AC.initForm = function () {
-                    var form =  $("#form-<?=$lowCtrl?>-add" + <?=$primary?>AC.id);
-                    var btn = $("#btn-<?=$lowCtrl?>-add" + <?=$primary?>AC.id);
+                EAC.initForm = function () {
+                    var form =  $("#form-event-add" + EAC.id);
+                    var btn = $("#btn-event-add" + EAC.id);
                     if(form && form.length && btn && btn.length){
                         form.submit(function () {
                             var form = $(this);
@@ -380,6 +508,8 @@ $(function () {
                                             break;
                                         case "SUCCESS":
                                             $().message("添加成功");
+                                            tab.params.resetList();
+                                            TabCtrl.closeTab(tab);
                                             break;
                                         default:
                                             $().message(MSG_SERVER_ERROR);
@@ -390,46 +520,47 @@ $(function () {
                             return false;
                         });
                     }else{
-                        $timeout(<?=$primary?>AC.initForm,_ID_POLL_INTERVAL);
+                        $timeout(EAC.initForm,_ID_POLL_INTERVAL);
                     }
                 }
 
-                <?=$primary?>AC.close = function(){
+                EAC.close = function(){
                     TabCtrl.closeTab(tab);
                 };
 
-                <?=$primary?>AC.init();
+                EAC.init();
 
-                $scope.<?=$primary?>AC = <?=$primary?>AC;
+                $scope.EAC = EAC;
             }
         }
     });
 
-    <?=$app."App"?>.component("t<?=ucfirst($page);?>Edit",{
-        templateUrl : "mgr/<?=$lowCtrl?>Edit",
+    wukongApp.component("tEventEdit",{
+        templateUrl : "mgr/eventEdit",
         bindings : {
             tab : "=",
         },
         controller : function($scope, $http, $rootScope, Tab, TabCtrl, Helper, $timeout){
             var ctrl = this;
             ctrl.$onInit = function(){
+                $scope.ARRS = $rootScope.ARRS;
                 var tab = ctrl.tab;
                 var params = tab.params;
-                var <?=ucfirst($page);?>EditCenter = {},<?=$primary?>EC = <?=ucfirst($page);?>EditCenter;
-                <?=$primary?>EC.id = Helper.IdService.genId();
+                var EventEditCenter = {},EEC = EventEditCenter;
+                EEC.id = Helper.IdService.genId();
 
-                $http.get($rootScope.SERVER+"/get<?=$lowCtrl?>detail", {params: params}).then(function(response){
+                $http.get($rootScope.SERVER+"/getEvent", {params: params}).then(function(response){
                     var result = response.data;
                     switch(result.ret){
                         case "FAIL":
                             $().message(result.data);
                             break;
                         case "SUCCESS":
-                            <?=$primary?>EC.info = result.data;
-                            <?=$primary?>EC.info.photoConfig = {
+                            EEC.info = result.data;
+                            EEC.info.photoConfig = {
                                 uploadType : "image",
                                 showDelete : function (obj) {
-                                    return <?=$primary?>EC.canEdit  && obj &&(obj.path || obj.id);
+                                    return EEC.canEdit  && obj &&(obj.path || obj.id);
                                 }
                             };
                             break;
@@ -439,20 +570,20 @@ $(function () {
                     }
                 });
 
-                <?=$primary?>EC.edit<?=ucfirst($page);?> = function () {
+                EEC.editEvent = function () {
                     if (!confirm("确认修改？")){
                         return ;
                     }
-                    $("#form-<?=$lowCtrl?>-edit"+<?=$primary?>EC.id).submit();
+                    $("#form-event-edit"+EEC.id).submit();
                 };
 
-                <?=$primary?>EC.init = function () {
-                    <?=$primary?>EC.initForm();
+                EEC.init = function () {
+                    EEC.initForm();
                 }
 
-                <?=$primary?>EC.initForm = function () {
-                    var form =  $("#form-<?=$lowCtrl?>-edit" + <?=$primary?>EC.id);
-                    var btn = $("#btn-<?=$lowCtrl?>-edit" + <?=$primary?>EC.id);
+                EEC.initForm = function () {
+                    var form =  $("#form-event-edit" + EEC.id);
+                    var btn = $("#btn-event-edit" + EEC.id);
                     if(form && form.length && btn && btn.length){
                         form.submit(function () {
                             var form = $(this);
@@ -467,7 +598,9 @@ $(function () {
                                             break;
                                         case "SUCCESS":
                                             $().message("编辑成功");
-                                            <?=$primary?>EC.canEdit = true;
+                                            EEC.canEdit = true;
+                                            tab.params.resetList();
+                                            TabCtrl.closeTab(tab);
                                             break;
                                         default:
                                             $().message(MSG_SERVER_ERROR);
@@ -478,39 +611,39 @@ $(function () {
                             return false;
                         });
                     }else{
-                        $timeout(<?=$primary?>EC.initForm,_ID_POLL_INTERVAL);
+                        $timeout(EEC.initForm,_ID_POLL_INTERVAL);
                     }
                 }
 
-                <?=$primary?>EC.init();
+                EEC.init();
 
-                <?=$primary?>EC.close = function(){
+                EEC.close = function(){
                     TabCtrl.closeTab(tab);
                 };
 
-                $scope.<?=$primary?>EC = <?=$primary?>EC;
+                $scope.EEC = EEC;
             }
         }
     });
 
-    <?=$app."App"?>.controller("<?=ucfirst($page);?>Controller",function($scope,Tab,TabCtrl){
-        var <?=ucfirst($page);?>HomeCenter = {},<?=$primary?>HC = <?=ucfirst($page);?>HomeCenter;
+    wukongApp.controller("EventController",function($scope,Tab,TabCtrl){
+        var EventHomeCenter = {},EHC = EventHomeCenter;
 
-        <?=$primary?>HC.initList = function(){
+        EHC.initList = function(){
             var listTab = new Tab({
-                name : "<?=$lowCtrl?>-list",
+                name : "event-list",
                 label : "列表",
                 closeable : false,
             });
             TabCtrl.addTab(listTab);
         };
-        <?=$primary?>HC.init = function(){
-            <?=$primary?>HC.initList();
+        EHC.init = function(){
+            EHC.initList();
         };
 
         $scope.TC = TabCtrl;
-        $scope.<?=$primary?>HC = <?=$primary?>HC;
+        $scope.EHC = EHC;
 
-        <?=$primary?>HC.init();
+        EHC.init();
     });
 });

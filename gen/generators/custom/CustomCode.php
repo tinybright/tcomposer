@@ -66,6 +66,7 @@ class CustomCode extends CCodeModel
 		$templatePath=$this->templatePath;
 
 		$action = $this->page;
+
 		$errors = [];
 		if($this->fields){
 			$statusInfos = [];
@@ -139,55 +140,134 @@ class CustomCode extends CCodeModel
 				);
 			}
 		}
-		$linePage = Utilities::toUnderScore($action);
-			$this->files[]=new CCodeFile(
-				$this->getViewFile($linePage.'-home'),
-				$this->render($templatePath.'/tpl_home.php',[
-					'app'=>$this->app,
-					'controller'=>$this->controller,
-					'page'=>$this->page,
-					'fields'=>$this->fields,
-				])
-			);
-			$this->files[]=new CCodeFile(
-				$this->getViewFile($linePage.'-list'),
-				$this->render($templatePath.'/tpl_list.php',[
-					'app'=>$this->app,
-					'controller'=>$this->controller,
-					'page'=>$this->page,
-					'fields'=>$this->fields,
-					'btn_import'=>$this->btn_import
-				])
-			);
-			$this->files[]=new CCodeFile(
-				$this->getViewFile($linePage.'-add'),
-				$this->render($templatePath.'/tpl_add.php',[
-					'app'=>$this->app,
-					'controller'=>$this->controller,
-					'page'=>$this->page,
-					'fields'=>$this->fields,
-				])
-			);
-			$this->files[]=new CCodeFile(
-				$this->getViewFile($linePage.'-edit'),
-				$this->render($templatePath.'/tpl_edit.php',[
-					'app'=>$this->app,
-					'controller'=>$this->controller,
-					'page'=>$this->page,
-					'fields'=>$this->fields,
-				])
-			);
+//		$linePage = Utilities::toUnderScore($action);
+//			$this->files[]=new CCodeFile(
+//				$this->getViewFile($linePage.'-home'),
+//				$this->render($templatePath.'/tpl_home.php',[
+//					'app'=>$this->app,
+//					'controller'=>$this->controller,
+//					'page'=>$this->page,
+//					'fields'=>$this->fields,
+//				])E
+//			);
+//			$this->files[]=new CCodeFile(
+//				$this->getViewFile($linePage.'-list'),
+//				$this->render($templatePath.'/tpl_list.php',[
+//					'app'=>$this->app,
+//					'controller'=>$this->controller,
+//					'page'=>$this->page,
+//					'fields'=>$this->fields,
+//					'btn_import'=>$this->btn_import
+//				])
+//			);
+//			$this->files[]=new CCodeFile(
+//				$this->getViewFile($linePage.'-add'),
+//				$this->render($templatePath.'/tpl_add.php',[
+//					'app'=>$this->app,
+//					'controller'=>$this->controller,
+//					'page'=>$this->page,
+//					'fields'=>$this->fields,
+//				])
+//			);
+//			$this->files[]=new CCodeFile(
+//				$this->getViewFile($linePage.'-edit'),
+//				$this->render($templatePath.'/tpl_edit.php',[
+//					'app'=>$this->app,
+//					'controller'=>$this->controller,
+//					'page'=>$this->page,
+//					'fields'=>$this->fields,
+//				])
+//			);
 			//转到 js-new 使用模板testdata.js;
-			$this->files[]=new CCodeFile(
-				$this->getJsFile(strtolower($action).''),
-				$this->render($templatePath.'/tpl_jsv1.php',[
-					'app'=>$this->app,
-					'controller'=>$this->controller,
-					'page'=>$this->page,
-					'fields'=>$this->fields,
-					'btn_import'=>$this->btn_import
-				])
-			);
+//			$this->files[]=new CCodeFile(
+//				$this->getJsFile(strtolower($action).''),
+//				$this->render($templatePath.'/tpl_jsv1.php',[
+//					'app'=>$this->app,
+//					'controller'=>$this->controller,
+//					'page'=>$this->page,
+//					'fields'=>$this->fields,
+//					'btn_import'=>$this->btn_import
+//				])
+//			);
+        $params = [
+            'app'=>$this->app,
+            'controller'=>$this->controller,
+            'page'=>$this->page,
+        ];
+        $targetJsPath = PathUtil::getJsPath([$this->controller,'controller']);
+
+        $key = 'event';
+
+        $jsTemplatePath = $templatePath.DIRECTORY_SEPARATOR.($key == 'event'?'js':'cjs');
+        $jsTemplateFiles = CFileHelper::findFiles($jsTemplatePath,array(
+            'exclude'=>array(
+                '.svn',
+                '.gitignore'
+            ),
+        ));
+        $sample = strtoupper($key[0]);
+        foreach ($jsTemplateFiles as $file){
+            if(Utilities::contain($file,'tpl_')){
+                continue;
+            }
+            //大小写敏感 原始使用Event;
+            $isJs = Utilities::contain($file,$key.'.js');
+
+            $newFilePath = str_replace($key,"tpl_".$key,$file);
+            $newFilePath = str_replace('.js','.php',$newFilePath);
+            if(!file_exists($newFilePath)){
+                $content = file_get_contents($file);
+                if(!Utilities::contain($content,'EOF')){
+                    $finalContent = '';
+                    $finalContent .= "<?\n".
+                        "\$ctrl = \$page".";\n".
+                        "\$samplectrl = ".'strtoupper($page[0])'.";\n".
+                        "\$upperctrl = ".'strtoupper($page)'.";\n".
+                        "\$lowerctrl = ".'lcfirst($page)'.";\n".
+                        "\$oldctrl = ".'($page)'.";\n".
+                        "\$linectrl = ".'Utilities::toUnderScore($page)'.";\n".
+                        "\$camelctrl = ".'ucfirst($page)'.";\n".
+                        'echo <<<EOF'."\n";
+                    $content = str_replace("\$","\\\$",$content);
+                    $content = str_replace(ucfirst($key),'{$camelctrl}',$content);
+                    $content = str_replace(lcfirst($key).'-','{$linectrl}-',$content);
+                    $content = str_replace(lcfirst($key),'{$lowerctrl}',$content);
+                    $content = str_replace(strtoupper($key),'{$upperctrl}',$content);
+                    $content = str_replace($sample.'LC','{$samplectrl}LC',$content);
+                    $content = str_replace($sample.'AC','{$samplectrl}AC',$content);
+                    $content = str_replace($sample.'EC','{$samplectrl}EC',$content);
+                    $content = str_replace($sample.'HC','{$samplectrl}HC',$content);
+                    $finalContent .= $content;
+                    $finalContent .= "\n";
+                    $finalContent .= 'EOF;';
+                    $finalContent .= "\n";
+                    file_put_contents($newFilePath,$finalContent);
+                }
+            }
+
+
+
+            if($isJs){
+
+                $relativePath = substr($file,strlen($jsTemplatePath));
+                $relativePath = str_replace('event',strtolower($this->page),$relativePath);
+                $this->files[]=new CCodeFile(
+                    $targetJsPath.$relativePath,
+                    $this->render($newFilePath,$params)
+                );
+            }else{
+
+                $relativePath = substr($file,strlen($jsTemplatePath));
+                $relativePath = str_replace($key,Utilities::toUnderScore($this->page),$relativePath);
+                $targetViewPath = PathUtil::getPath(['protected','views',$this->controller]);
+                $this->files[]=new CCodeFile(
+                    $targetViewPath.$relativePath,
+                    $this->render($newFilePath,$params)
+                );
+
+            }
+
+        }
             //todo skip
 //			$this->files[]=new CCodeFile(
 //				$this->getComponentsPath('MenuUtil.php'),
@@ -234,11 +314,7 @@ class CustomCode extends CCodeModel
 				'.gitignore'
 			),
 		));
-		$params = [
-			'app'=>$this->app,
-			'controller'=>$this->controller,
-			'page'=>$this->page,
-		];
+
 
 		//service
         if(true){
@@ -284,7 +360,7 @@ class CustomCode extends CCodeModel
 		}
 		
 		//js-new
-		/*$targetJsPath = PathUtil::getJsPath([$this->controller,'controller']);
+		$targetJsPath = PathUtil::getJsPath([$this->controller,'controller']);
 		$jsTemplatePath = $templatePath.DIRECTORY_SEPARATOR.'js';
 		$jsTemplateFiles = CFileHelper::findFiles($jsTemplatePath,array(
 			'exclude'=>array(
@@ -296,7 +372,7 @@ class CustomCode extends CCodeModel
 			if(Utilities::contain($file,'tpl_')){
 				continue;
 			}
-			$newFilePath = str_replace('testdata',"tpl_testdata",$file);
+			$newFilePath = str_replace('event',"tpl_event",$file);
 			$newFilePath = str_replace('.js','.php',$newFilePath);
 			if(!file_exists($newFilePath)){
 				$content = file_get_contents($file);
@@ -332,7 +408,7 @@ class CustomCode extends CCodeModel
 				$targetJsPath.$relativePath,
 				$this->render($newFilePath,$params)
 			);
-		}*/
+		}
 
 		//todo skip
 		//api

@@ -1,16 +1,11 @@
-<?
-    $primary = strtoupper($page[0]);
-    $linePage = Utilities::toUnderScore($page);
-    $lowCtrl = strtolower($page);
-?>
 $(function () {
-    var <?=$app."App"?> = angular.module(_MOUDLE_NAME);
-    if(!<?=$app."App"?>){
+    var wukongApp = angular.module(_MOUDLE_NAME);
+    if(!wukongApp){
         console.e("no app");
         return;
     }
-    <?=$app."App"?>.component("t<?=ucfirst($page);?>List",{
-        templateUrl : "mgr/<?=$lowCtrl?>List",
+    wukongApp.component("tConfigList",{
+        templateUrl : "mgr/configList",
         controller : function($scope,$http,Tab,TabCtrl,$rootScope,LoadData,DataSearch,TimeSelect,FormHelper,Helper,$timeout,uiGridConstants, uiGridPaginationService,ModalService){
 
             $(".modal").one("show.bs.modal",function(){
@@ -18,68 +13,86 @@ $(function () {
             });
 
             $scope._LS = $rootScope._LS;
+            $scope.ARRS = $rootScope.ARRS;
+            var ConfigListCenter = {},CLC = ConfigListCenter;
 
-            var <?=ucfirst($page);?>ListCenter = {},<?=$primary?>LC = <?=ucfirst($page);?>ListCenter;
-
-            <?=$primary?>LC.grid = {};
-            <?=$primary?>LC.grid.options = {};
-            <?=$primary?>LC.grid.update  = function (list,sum) {
-                // if(<?=$primary?>LC.grid.options){
-                <?=$primary?>LC.grid.options.totalItems = sum;
-                <?=$primary?>LC.grid.options.data = list;
+            CLC.grid = {};
+            CLC.grid.options = {};
+            CLC.grid.update  = function (list,sum) {
+                // if(CLC.grid.options){
+                CLC.grid.options.totalItems = sum;
+                CLC.grid.options.data = list;
                 // }
             };
-            <?=$primary?>LC.grid.init = function () {
+            CLC.grid.init = function () {
                 var config = {
                     useExternalFiltering: true,
                     enableColumnResizing: true,
                     enableCellEdit: false,
                     enablePinning: true,
                     disableCancelFilterButton: false,
-                    data: <?=$primary?>LC.<?=$lowCtrl?>Log.load.itemList,
+                    data: CLC.configLog.load.itemList,
                     enableFiltering: true,
                     showGridFooter:false,
                     enablePagination:true,
                     enablePaginationControls:true,
                     columnDefs: [
+                        {
+                            field : 'key',
+                            width : 120,
+                            displayName:"名称",
+                            enableColumnMenu : true,
+                            filter:{
+                                term : "",
+                                type : uiGridConstants.filter.SELECT,
+                                selectOptions : Helper.UiGridHelper.getSelectOptions(ARRS.CONFIG_NAME),
+                                disableCancelFilterButton: false
+                            },
+                            cellTemplate:"<div class='ui-grid-cell-contents'>{{row.entity.key | CONFIG_NAME}}</div>"
+                        },
                         Helper.UiGridHelper.newInput({
-                            field: 'host__nickname',
-                            displayName: '传播者',
+                            field: 'value',
+                            displayName: '值',
                             widthName: 6
                         }),
+
+                        // Helper.UiGridHelper.newInput({
+                        //     field: 'key',
+                        //     displayName: '键',
+                        //     widthName: 6
+                        // }),
+
+                        // Helper.UiGridHelper.newInput({
+                        //     field: 'user__nickname',
+                        //     displayName: '相关人',
+                        //     widthName: 6
+                        // }),
+
                         Helper.UiGridHelper.newInput({
-                            field: 'user__nickname',
-                            displayName: '访问者',
+                            field: 'creator__nickname',
+                            displayName: '创建人',
                             widthName: 6
                         }),
-                        Helper.UiGridHelper.newInput({
-                            field: 'task_id',
-                            displayName: '任务ID',
-                            widthName: 6
-                        }),
+
                         Helper.UiGridHelper.newRanger({
-                            field: 'created',
-                            displayName: '访问时间',
+                            field: 'updated',
+                            displayName: '更新时间',
                             widthName: 6,
-                            timer : "grid.appScope.<?=$primary?>LC.<?=$lowCtrl?>LogSearch.search.keywords.created"
+                            timer : "grid.appScope.CLC.configLogSearch.search.keywords.updated"
                         }),
-                        Helper.UiGridHelper.newInput({
+
+                        {
+                            name: '操作',
+                            pinnedRight: true,
                             enableFiltering: false,
-                            field: 'amount',
-                            displayName: '收益',
-                            widthName: 6
-                        })
-                        // {
-                        //     name: '操作',
-                        //     pinnedRight: true,
-                        //     enableFiltering: false,
-                        //     enableColumnResizing: false,
-                        //     width: 120,
-                        //     maxWidth: 2000, minWidth: 120,
-                        //     cellTemplate: '<button type="button" class="btn btn-link" ng-click="grid.appScope.<?=$primary?>LC.single.dealAction(row.entity,grid.appScope.<?=$primary?>LC.batch.getActionVerb(action),action);" ng-repeat="action in row.entity.actions">{{grid.appScope.<?=$primary?>LC.batch.getActionName(action)}}</button>'
-                        // },
+                            enableColumnResizing: false,
+                            width: 120,
+                            maxWidth: 2000, minWidth: 120,
+                            cellTemplate: '<button type="button" class="btn btn-link" ng-click="grid.appScope.CLC.single.dealAction(row.entity,grid.appScope.CLC.batch.getActionVerb(action),action);" ng-repeat="action in row.entity.actions">{{grid.appScope.CLC.batch.getActionName(action)}}</button>'
+                        }
+                        // ,
                         // Helper.UiGridHelper.newLog({
-                        //     click : "grid.appScope.<?=$primary?>LC.single.dealAction(row.entity,\'log\');"
+                        //     click : "grid.appScope.CLC.single.dealAction(row.entity,\'log\');"
                         // })
                     ],
                     //---------------api---------------------
@@ -92,7 +105,7 @@ $(function () {
                             var params = {};
                             // var vipstart = BLC.bdLogSearch.search.keywords.vipstart;
                             // var vipend = BLC.bdLogSearch.search.keywords.vipend;
-                            // angular.forEach($scope.<?=$primary?>LC.grid.options.columnDefs, function (col, key) {
+                            // angular.forEach($scope.CLC.grid.options.columnDefs, function (col, key) {
                             //     if (col.filter) {
                             //         params[col.field] = col.filter.term;
                             //     }
@@ -101,93 +114,101 @@ $(function () {
                             // params.vipend = vipend;
                             // BLC.bdLogSearch.search.keywords = angular.copy(params);
 
-                            <?=$primary?>LC.<?=$lowCtrl?>Log.load.pagesize = pageSize;
-                            <?=$primary?>LC.<?=$lowCtrl?>Log.load.getPage(newPage);
+                            CLC.configLog.load.pagesize = pageSize;
+                            CLC.configLog.load.getPage(newPage);
                         });
                         gridApi.core.on.filterChanged($scope, function (a, b) {
                             console.log("case3");
 
                             var params = {};
-                            var created = <?=$primary?>LC.<?=$lowCtrl?>LogSearch.search.keywords.created;
+                            var created = CLC.configLogSearch.search.keywords.created;
                             // var vipend = BLC.bdLogSearch.search.keywords.vipend;
-                            angular.forEach($scope.<?=$primary?>LC.grid.options.columnDefs, function (col, key) {
+                            angular.forEach($scope.CLC.grid.options.columnDefs, function (col, key) {
                                 if (col.filter) {
                                     params[col.field] = col.filter.term;
                                 }
                             });
                             params.created = created;
                             // params.vipend = vipend;
-                            <?=$primary?>LC.<?=$lowCtrl?>LogSearch.search.keywords = angular.copy(params);
+                            CLC.configLogSearch.search.keywords = angular.copy(params);
 
-                            <?=$primary?>LC.<?=$lowCtrl?>LogSearch.search.go();
+                            CLC.configLogSearch.search.go();
 
-                            $scope.<?=$primary?>LC.grid.options.paginationCurrentPage = 1;
+                            $scope.CLC.grid.options.paginationCurrentPage = 1;
 
                         });
                     }
                 };
 
-                <?=$primary?>LC.grid.options = $.extend({}, Helper.UiGridHelper.COMMON_CONFIG ,config)
+                CLC.grid.options = $.extend({}, Helper.UiGridHelper.COMMON_CONFIG ,config)
             };
 
-            <?=$primary?>LC.<?=$lowCtrl?>Log = new LoadData({
-                loadUrl : "/get<?=$lowCtrl?>list",
+            CLC.configLog = new LoadData({
+                loadUrl : "/getConfiglist",
                 getParams : function () {
-                    return angular.copy(<?=$primary?>LC.<?=$lowCtrl?>LogSearch.search.keywords);
+                    return angular.copy(CLC.configLogSearch.search.keywords);
                 },
                 onLoaded:function(list,page,result){
-                    <?=$primary?>LC.grid.update(list,result.data.sum);
+                    CLC.grid.update(list,result.data.sum);
                 }
             });
-            <?=$primary?>LC.<?=$lowCtrl?>LogSearch = new DataSearch({
+            CLC.configLogSearch = new DataSearch({
                 onSearch : function () {
-                    <?=$primary?>LC.<?=$lowCtrl?>Log.load.reset();
+                    CLC.configLog.load.reset();
                 },
                 onReset : function(){
                 }
             });
 
-            <?=$primary?>LC.<?=$lowCtrl?>LogSearch.search.reset = function(){
-                <?=$primary?>LC.<?=$lowCtrl?>LogSearch.search.keywords = {};
+            CLC.configLogSearch.search.reset = function(){
+                CLC.configLogSearch.search.keywords = {};
                 $(".search-time-input").val("");
             }
 
-            <?=$primary?>LC.single = {};
-            <?=$primary?>LC.single.dealAction = function (<?=$lowCtrl?>,verb) {
-                if ("<?=$lowCtrl?>_edit"==verb){
-                    <?=$primary?>LC.edit<?=ucfirst($page);?>(<?=$lowCtrl?>.id);
+            CLC.single = {};
+            CLC.single.dealAction = function (config,verb) {
+                if ("config_edit"==verb){
+                    CLC.editConfig(config.id);
                     return ;
                 }
-                if ("<?=$lowCtrl?>_delete"==verb){
-                    <?=$primary?>LC.delete<?=ucfirst($page);?>(<?=$lowCtrl?>.id);
+                if ("config_delete"==verb){
+                    CLC.deleteConfig(config.id);
                     return ;
+                }
+                if("log" == verb){
+                    ModalService.showLog({
+                        objtype :"task_user" ,
+                        objid :taskuser.id,
+                        // category: "task_user"
+                    });
+                    return;
                 }
             };
-            <?=$primary?>LC.batch = {};
-            <?=$primary?>LC.batch.dealAction = function (verb) {
-                var selectedList = <?=$primary?>LC.batch.getSelectedList();
+            CLC.batch = {};
+            CLC.batch.dealAction = function (verb) {
+                var selectedList = CLC.batch.getSelectedList();
                 var ids = [];
                 angular.forEach(selectedList,function (value,key) {
                     ids.push(value.id);
                 });
-                if ("<?=$lowCtrl?>_delete"==verb){
-                    <?=$primary?>LC.delete<?=ucfirst($page);?>(ids);
-                    <?=$primary?>LC.batch.actions = [];
+                if ("config_delete"==verb){
+                    CLC.deleteConfig(ids);
+                    CLC.batch.actions = [];
                     return ;
                 }
             }
-            <?=$primary?>LC.batch.getActionName = function (action) {
+            CLC.batch.getActionName = function (action) {
                 var list = action.split("|");
                 return list[0];
             };
-            <?=$primary?>LC.batch.getActionVerb = function (action) {
+            CLC.batch.getActionVerb = function (action) {
                 var list = action.split("|");
                 return list[1];
             };
-            <?=$primary?>LC.batch.actions = [];
-            <?=$primary?>LC.batch.holderActions = ["删除|delete"];
-            <?=$primary?>LC.batch.calcAction = function () {
-                var selectedList = <?=$primary?>LC.batch.getSelectedList();
+            CLC.batch.actions = [];
+            CLC.batch.holderActions = ["删除|delete"];
+            CLC.batch.calcAction = function () {
+                var selectedList = CLC.batch.getSelectedList();
                 var actions = [];
                 if(selectedList && selectedList.length > 0){
                     angular.forEach(selectedList,function (val,key) {
@@ -203,19 +224,19 @@ $(function () {
                     commonList = angular.copy(ret);
                 }
                 for (var k in commonList){
-                    if ("编辑|<?=$lowCtrl?>_edit" == commonList[k]){
+                    if ("编辑|config_edit" == commonList[k]){
                         commonList.splice(k, 1);
                     }
                 }
                 if(commonList && commonList.length){
-                    <?=$primary?>LC.batch.actions = angular.copy(commonList);
+                    CLC.batch.actions = angular.copy(commonList);
                 }else{
-                    <?=$primary?>LC.batch.actions = [];
+                    CLC.batch.actions = [];
                 }
             }
-            <?=$primary?>LC.batch.ciList = [];
+            CLC.batch.ciList = [];
             // batch select
-            <?=$primary?>LC.batch.select = function(ci){
+            CLC.batch.select = function(ci){
                 // 限制 : 同客户 同月份 同还款账户
                 if(!ci._select){
 
@@ -223,63 +244,72 @@ $(function () {
                 //
                 ci._select = !ci._select;
 
-                <?=$primary?>LC.batch.calcAction();
+                CLC.batch.calcAction();
             };
-            <?=$primary?>LC.batch.selectAll = function(){
-                if(!<?=$primary?>LC.<?=$lowCtrl?>Log.load.itemList || !<?=$primary?>LC.<?=$lowCtrl?>Log.load.itemList.length){
+            CLC.batch.selectAll = function(){
+                if(!CLC.configLog.load.itemList || !CLC.configLog.load.itemList.length){
                     return;
                 }
-                var isAllSelected = <?=$primary?>LC.batch.isAllSelected();
-                <?=$primary?>LC.<?=$lowCtrl?>Log.load.itemList.forEach(function(ci){
+                var isAllSelected = CLC.batch.isAllSelected();
+                CLC.configLog.load.itemList.forEach(function(ci){
                     ci._select = !isAllSelected;
                 });
-                <?=$primary?>LC.batch.calcAction();
+                CLC.batch.calcAction();
             };
-            <?=$primary?>LC.batch.isAllSelected = function(){
-                if(!<?=$primary?>LC.<?=$lowCtrl?>Log.load.itemList || !<?=$primary?>LC.<?=$lowCtrl?>Log.load.itemList.length){
+            CLC.batch.isAllSelected = function(){
+                if(!CLC.configLog.load.itemList || !CLC.configLog.load.itemList.length){
                     return false;
                 }
-                return <?=$primary?>LC.<?=$lowCtrl?>Log.load.itemList.every(function(ci){
+                return CLC.configLog.load.itemList.every(function(ci){
                     return ci._select;
                 });
             };
-            <?=$primary?>LC.batch.hasSelected = function(){
-                if(!<?=$primary?>LC.<?=$lowCtrl?>Log.load.itemList || !<?=$primary?>LC.<?=$lowCtrl?>Log.load.itemList.length){
+            CLC.batch.hasSelected = function(){
+                if(!CLC.configLog.load.itemList || !CLC.configLog.load.itemList.length){
                     return false;
                 }
-                return <?=$primary?>LC.<?=$lowCtrl?>Log.load.itemList.some(function(ci){
+                return CLC.configLog.load.itemList.some(function(ci){
                     return ci._select;
                 });
             };
-            <?=$primary?>LC.batch.getSelectedList = function(){
-                return <?=$primary?>LC.<?=$lowCtrl?>Log.load.itemList.filter(function(ci){
+            CLC.batch.getSelectedList = function(){
+                return CLC.configLog.load.itemList.filter(function(ci){
                     return ci._select;
                 });
             };
 
-            <?=$primary?>LC.add<?=ucfirst($page);?> = function(){
+            CLC.addConfig = function(){
                 var addTab = new Tab({
-                    name : "<?=$lowCtrl?>-add",
+                    name : "config-add",
                     label : "添加",
                     autoopen : true,
+                    params : {
+                        doLoad: function () {
+                            CLC.configLog.load.reset();
+                        }
+                    }
                 });
                 TabCtrl.addTab(addTab);
             };
 
-            <?=$primary?>LC.edit<?=ucfirst($page);?> = function(id){
+            CLC.editConfig = function(id){
                 var editTab = new Tab({
-                    name : "<?=$lowCtrl?>-edit",
+                    name : "config-edit",
                     label : "编辑",
                     autoopen : true,
                     params : {
                         id : id,
                         noclose : true,
+                        doLoad: function () {
+                            CLC.configLog.load.reset();
+                        }
                     }
+
                 });
                 TabCtrl.addTab(editTab);
             };
 
-            <?=$primary?>LC.delete<?=ucfirst($page);?> = function(id){
+            CLC.deleteConfig = function(id){
                 if (!confirm("确定删除？")){
                     return ;
                 }
@@ -287,59 +317,61 @@ $(function () {
                     id : id
                 };
                 var params = FormHelper.prepareParams(rawParams);
-                $http.post($rootScope.SERVER+"/delete<?=$lowCtrl?>", params).then(function(response){
+                $http.post($rootScope.SERVER+"/deleteConfig", params).then(function(response){
                     switch(response.data.ret){
                         case "FAIL":
                             $().message(response.data.data);
                             break;
                         case "SUCCESS":
                             $().message("删除成功");
-                            <?=$primary?>LC.<?=$lowCtrl?>LogSearch.search.go();
+                            CLC.configLogSearch.search.go();
                             break;
                         default :
                             $().message(MSG_SERVER_ERROR);
                             break;
                     }
                 });
-                <?=$primary?>LC.<?=$lowCtrl?>LogSearch.search.go();
+                CLC.configLogSearch.search.go();
             };
 
-            <?=$primary?>LC.init = function () {
-                <?=$primary?>LC.grid.init();
+            CLC.init = function () {
+                CLC.grid.init();
             };
 
-            $scope.$watch("<?=$primary?>LC.<?=$lowCtrl?>LogSearch.search.keywords",function () {
-                <?=$primary?>LC.<?=$lowCtrl?>LogSearch.search.go();
+            $scope.$watch("CLC.configLogSearch.search.keywords",function () {
+                CLC.configLogSearch.search.go();
             },true);
 
-            <?=$primary?>LC.init();
-            $scope.<?=$primary?>LC = <?=$primary?>LC;
+            CLC.init();
+            $scope.CLC = CLC;
         }
     });
 
-    <?=$app."App"?>.component("t<?=ucfirst($page);?>Add",{
-        templateUrl : "mgr/<?=$lowCtrl?>Add",
+    wukongApp.component("tConfigAdd",{
+        templateUrl : "mgr/configAdd",
         bindings : {
             tab : "=",
         },
-        controller : function($scope, $http, $rootScope, Tab, TabCtrl, Helper, $timeout){
+        controller : function($scope, $http, $rootScope, Tab, TabCtrl, Helper, $timeout,ModalService){
             var ctrl = this;
             ctrl.$onInit = function(){
+                $scope.ARRS = $rootScope.ARRS;
                 var tab = ctrl.tab;
-                var <?=ucfirst($page);?>AddCenter = {},<?=$primary?>AC = <?=ucfirst($page);?>AddCenter;
-                <?=$primary?>AC.id = Helper.IdService.genId();
-
-                <?=$primary?>AC.info = {};
-                <?=$primary?>AC.canEdit = true;
-                <?=$primary?>AC.info.photoConfig = {
+                var ConfigAddCenter = {},CAC = ConfigAddCenter;
+                CAC.id = Helper.IdService.genId();
+                var params = tab.params;
+                CAC.info = {};
+                // CAC.info.uid = tab.params.uid?tab.params.uid:0;
+                CAC.canEdit = true;
+                CAC.info.photoConfig = {
                     uploadType : "image",
                     showDelete : function (obj) {
-                        return <?=$primary?>AC.canEdit  && obj && (obj.path || obj.id);
+                        return CAC.canEdit  && obj && (obj.path || obj.id);
                     }
                 };
 
-                <?=$primary?>AC.add<?=ucfirst($page);?> = function(){
-                    $http.post($rootScope.SERVER+"/add<?=$lowCtrl?>", $("#form-<?=$lowCtrl?>-add").serialize()).then(function(response){
+                CAC.addConfig = function(){
+                    $http.post($rootScope.SERVER+"/addConfig", $("#form-config-add").serialize()).then(function(response){
                         var result = response.data;
                         switch(result.ret){
                             case "FAIL":
@@ -347,6 +379,7 @@ $(function () {
                                 break;
                             case "SUCCESS":
                                 $().message("添加成功");
+                                params.doLoad();
                                 break;
                             default :
                                 $().message(MSG_SERVER_ERROR);
@@ -355,17 +388,30 @@ $(function () {
                     });
                 }
 
-                <?=$primary?>AC.add<?=ucfirst($page);?> = function () {
-                    $("#form-<?=$lowCtrl?>-add" + <?=$primary?>AC.id).submit();
-                };
-
-                <?=$primary?>AC.init = function () {
-                    <?=$primary?>AC.initForm();
+                CAC.pickUser = function () {
+                    ModalService.showSuperUserList({
+                        onConfirm :function (user) {
+                            console.log("confirm");
+                            if(user!=null){
+                                CAC.info.uid = user.id;
+                                CAC.info.user__nickname = user.nickname;
+                            }
+                        },
+                        title : "用户名单"
+                    });
                 }
 
-                <?=$primary?>AC.initForm = function () {
-                    var form =  $("#form-<?=$lowCtrl?>-add" + <?=$primary?>AC.id);
-                    var btn = $("#btn-<?=$lowCtrl?>-add" + <?=$primary?>AC.id);
+                CAC.addConfig = function () {
+                    $("#form-config-add" + CAC.id).submit();
+                };
+
+                CAC.init = function () {
+                    CAC.initForm();
+                }
+
+                CAC.initForm = function () {
+                    var form =  $("#form-config-add" + CAC.id);
+                    var btn = $("#btn-config-add" + CAC.id);
                     if(form && form.length && btn && btn.length){
                         form.submit(function () {
                             var form = $(this);
@@ -380,6 +426,7 @@ $(function () {
                                             break;
                                         case "SUCCESS":
                                             $().message("添加成功");
+                                            params.doLoad();
                                             break;
                                         default:
                                             $().message(MSG_SERVER_ERROR);
@@ -390,23 +437,23 @@ $(function () {
                             return false;
                         });
                     }else{
-                        $timeout(<?=$primary?>AC.initForm,_ID_POLL_INTERVAL);
+                        $timeout(CAC.initForm,_ID_POLL_INTERVAL);
                     }
                 }
 
-                <?=$primary?>AC.close = function(){
+                CAC.close = function(){
                     TabCtrl.closeTab(tab);
                 };
 
-                <?=$primary?>AC.init();
+                CAC.init();
 
-                $scope.<?=$primary?>AC = <?=$primary?>AC;
+                $scope.CAC = CAC;
             }
         }
     });
 
-    <?=$app."App"?>.component("t<?=ucfirst($page);?>Edit",{
-        templateUrl : "mgr/<?=$lowCtrl?>Edit",
+    wukongApp.component("tConfigEdit",{
+        templateUrl : "mgr/configEdit",
         bindings : {
             tab : "=",
         },
@@ -415,21 +462,24 @@ $(function () {
             ctrl.$onInit = function(){
                 var tab = ctrl.tab;
                 var params = tab.params;
-                var <?=ucfirst($page);?>EditCenter = {},<?=$primary?>EC = <?=ucfirst($page);?>EditCenter;
-                <?=$primary?>EC.id = Helper.IdService.genId();
+                $scope.ARRS = $rootScope.ARRS;
+                var ConfigEditCenter = {},CEC = ConfigEditCenter;
+                CEC.id = Helper.IdService.genId();
 
-                $http.get($rootScope.SERVER+"/get<?=$lowCtrl?>detail", {params: params}).then(function(response){
+                $http.get($rootScope.SERVER+"/getConfig", {params: {
+                    id:params.id
+                }}).then(function(response){
                     var result = response.data;
                     switch(result.ret){
                         case "FAIL":
                             $().message(result.data);
                             break;
                         case "SUCCESS":
-                            <?=$primary?>EC.info = result.data;
-                            <?=$primary?>EC.info.photoConfig = {
+                            CEC.info = result.data;
+                            CEC.info.photoConfig = {
                                 uploadType : "image",
                                 showDelete : function (obj) {
-                                    return <?=$primary?>EC.canEdit  && obj &&(obj.path || obj.id);
+                                    return CEC.canEdit  && obj &&(obj.path || obj.id);
                                 }
                             };
                             break;
@@ -439,20 +489,20 @@ $(function () {
                     }
                 });
 
-                <?=$primary?>EC.edit<?=ucfirst($page);?> = function () {
+                CEC.editConfig = function () {
                     if (!confirm("确认修改？")){
                         return ;
                     }
-                    $("#form-<?=$lowCtrl?>-edit"+<?=$primary?>EC.id).submit();
+                    $("#form-config-edit"+CEC.id).submit();
                 };
 
-                <?=$primary?>EC.init = function () {
-                    <?=$primary?>EC.initForm();
+                CEC.init = function () {
+                    CEC.initForm();
                 }
 
-                <?=$primary?>EC.initForm = function () {
-                    var form =  $("#form-<?=$lowCtrl?>-edit" + <?=$primary?>EC.id);
-                    var btn = $("#btn-<?=$lowCtrl?>-edit" + <?=$primary?>EC.id);
+                CEC.initForm = function () {
+                    var form =  $("#form-config-edit" + CEC.id);
+                    var btn = $("#btn-config-edit" + CEC.id);
                     if(form && form.length && btn && btn.length){
                         form.submit(function () {
                             var form = $(this);
@@ -467,7 +517,8 @@ $(function () {
                                             break;
                                         case "SUCCESS":
                                             $().message("编辑成功");
-                                            <?=$primary?>EC.canEdit = true;
+                                            CEC.canEdit = true;
+                                            params.doLoad();
                                             break;
                                         default:
                                             $().message(MSG_SERVER_ERROR);
@@ -478,39 +529,39 @@ $(function () {
                             return false;
                         });
                     }else{
-                        $timeout(<?=$primary?>EC.initForm,_ID_POLL_INTERVAL);
+                        $timeout(CEC.initForm,_ID_POLL_INTERVAL);
                     }
                 }
 
-                <?=$primary?>EC.init();
+                CEC.init();
 
-                <?=$primary?>EC.close = function(){
+                CEC.close = function(){
                     TabCtrl.closeTab(tab);
                 };
 
-                $scope.<?=$primary?>EC = <?=$primary?>EC;
+                $scope.CEC = CEC;
             }
         }
     });
 
-    <?=$app."App"?>.controller("<?=ucfirst($page);?>Controller",function($scope,Tab,TabCtrl){
-        var <?=ucfirst($page);?>HomeCenter = {},<?=$primary?>HC = <?=ucfirst($page);?>HomeCenter;
+    wukongApp.controller("ConfigController",function($scope,Tab,TabCtrl){
+        var ConfigHomeCenter = {},CHC = ConfigHomeCenter;
 
-        <?=$primary?>HC.initList = function(){
+        CHC.initList = function(){
             var listTab = new Tab({
-                name : "<?=$lowCtrl?>-list",
+                name : "config-list",
                 label : "列表",
                 closeable : false,
             });
             TabCtrl.addTab(listTab);
         };
-        <?=$primary?>HC.init = function(){
-            <?=$primary?>HC.initList();
+        CHC.init = function(){
+            CHC.initList();
         };
 
         $scope.TC = TabCtrl;
-        $scope.<?=$primary?>HC = <?=$primary?>HC;
+        $scope.CHC = CHC;
 
-        <?=$primary?>HC.init();
+        CHC.init();
     });
 });

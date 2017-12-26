@@ -30,14 +30,14 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'page'); ?>
-		<?php echo $form->textField($model,'page',array('size'=>65,'id'=>'input-page')); ?>
+		<?php echo $form->textField($model,'page',array('size'=>65,'id'=>'input-page','placeholder'=>'区分大小写 例如NewsCata')); ?>
 		<div class="tooltip">
 			Action IDs are case-insensitive. Separate multiple action IDs with commas or spaces.
 		</div>
 		<?php echo $form->error($model,'page'); ?>
 	</div>
 
-	<div class="row">
+	<div class="row hidden">
 		<?php echo $form->labelEx($model,'是否导入'); ?>
 		<?php echo $form->checkBox($model,'btn_import'); ?>
 		<div class="tooltip">
