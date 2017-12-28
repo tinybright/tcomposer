@@ -1,5 +1,5 @@
 <div class="page-event-add page-operate page-operate-new">
-    <form ng-attr-id="{{'form-event-add'+EAC.id}}" class="form-wukong form-horizontal" action="<?=Yii::app()->createUrl("/mgrapi/addevent")?>">
+    <form ng-attr-id="{{'form-event-add'+EAC.id}}" class="form-muum form-horizontal" action="<?=Yii::app()->createUrl("/mgrapi/addevent")?>">
         <div class="form-left1 col-md-6 col-md-offset-3">
             <div class="block">
 <!--                <div class="block-head">基本信息</div>-->

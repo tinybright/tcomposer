@@ -1,10 +1,10 @@
 $(function () {
-    var wukongApp = angular.module(_MOUDLE_NAME);
-    if(!wukongApp){
+    var muumApp = angular.module(_MOUDLE_NAME);
+    if(!muumApp){
         console.e("no app");
         return;
     }
-    wukongApp.component("tConfigList",{
+    muumApp.component("tConfigList",{
         templateUrl : "mgr/configList",
         controller : function($scope,$http,Tab,TabCtrl,$rootScope,LoadData,DataSearch,TimeSelect,FormHelper,Helper,$timeout,uiGridConstants, uiGridPaginationService,ModalService){
 
@@ -347,7 +347,7 @@ $(function () {
         }
     });
 
-    wukongApp.component("tConfigAdd",{
+    muumApp.component("tConfigAdd",{
         templateUrl : "mgr/configAdd",
         bindings : {
             tab : "=",
@@ -452,7 +452,7 @@ $(function () {
         }
     });
 
-    wukongApp.component("tConfigEdit",{
+    muumApp.component("tConfigEdit",{
         templateUrl : "mgr/configEdit",
         bindings : {
             tab : "=",
@@ -544,7 +544,7 @@ $(function () {
         }
     });
 
-    wukongApp.controller("ConfigController",function($scope,Tab,TabCtrl){
+    muumApp.controller("ConfigController",function($scope,Tab,TabCtrl){
         var ConfigHomeCenter = {},CHC = ConfigHomeCenter;
 
         CHC.initList = function(){

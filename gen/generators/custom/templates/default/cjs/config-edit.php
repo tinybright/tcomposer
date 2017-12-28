@@ -1,5 +1,5 @@
 <div class="page-config-edit page-operate">
-    <form ng-attr-id="{{'form-config-edit'+CEC.id}}" class="form-wukong form-horizontal" action="<?=Yii::app()->createUrl("/mgrapi/editconfig")?>">
+    <form ng-attr-id="{{'form-config-edit'+CEC.id}}" class="form-muum form-horizontal" action="<?=Yii::app()->createUrl("/mgrapi/editconfig")?>">
         <input type="hidden" name="config[id]" value="{{CEC.info.id}}">
         <input type="hidden" name="config[ver]" value="{{CEC.info.ver}}">
         <div class="form-left pull-left">

@@ -1,10 +1,10 @@
 $(function () {
-    var wukongApp = angular.module(_MOUDLE_NAME);
-    if(!wukongApp){
+    var muumApp = angular.module(_MOUDLE_NAME);
+    if(!muumApp){
         console.e("no app");
         return;
     }
-    wukongApp.component("tEventList",{
+    muumApp.component("tEventList",{
         templateUrl : "mgr/eventList",
         controller : function($scope,$http,Tab,TabCtrl,$rootScope,LoadData,DataSearch,TimeSelect,FormHelper,Helper,$timeout,uiGridConstants, uiGridPaginationService,ModalService,ScrollLoad,$window,DelayService){
 
@@ -444,7 +444,7 @@ $(function () {
         }
     });
 
-    wukongApp.component("tEventAdd",{
+    muumApp.component("tEventAdd",{
         templateUrl : "mgr/eventAdd",
         bindings : {
             tab : "=",
@@ -535,7 +535,7 @@ $(function () {
         }
     });
 
-    wukongApp.component("tEventEdit",{
+    muumApp.component("tEventEdit",{
         templateUrl : "mgr/eventEdit",
         bindings : {
             tab : "=",
@@ -626,7 +626,7 @@ $(function () {
         }
     });
 
-    wukongApp.controller("EventController",function($scope,Tab,TabCtrl){
+    muumApp.controller("EventController",function($scope,Tab,TabCtrl){
         var EventHomeCenter = {},EHC = EventHomeCenter;
 
         EHC.initList = function(){

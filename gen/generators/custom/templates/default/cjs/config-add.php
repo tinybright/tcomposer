@@ -1,5 +1,5 @@
 <div class="page-config-add page-operate">
-    <form ng-attr-id="{{'form-config-add'+CAC.id}}" class="form-wukong form-horizontal" action="<?=Yii::app()->createUrl("/mgrapi/addconfig")?>">
+    <form ng-attr-id="{{'form-config-add'+CAC.id}}" class="form-muum form-horizontal" action="<?=Yii::app()->createUrl("/mgrapi/addconfig")?>">
         <div class="form-left pull-left">
             <div class="block">
                 <div class="block-head">基本信息</div>

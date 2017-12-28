@@ -8,12 +8,12 @@ $linectrl = Utilities::toUnderScore($page);
 $camelctrl = ucfirst($page);
 echo <<<EOF
 \$(function () {
-    var wukongApp = angular.module(_MOUDLE_NAME);
-    if(!wukongApp){
+    var muumApp = angular.module(_MOUDLE_NAME);
+    if(!muumApp){
         console.e("no app");
         return;
     }
-    wukongApp.component("t{$camelctrl}List",{
+    muumApp.component("t{$camelctrl}List",{
         templateUrl : "mgr/{$lowerctrl}List",
         controller : function(\$scope,\$http,Tab,TabCtrl,\$rootScope,LoadData,DataSearch,TimeSelect,FormHelper,Helper,\$timeout,uiGridConstants, uiGridPaginationService,ModalService,ScrollLoad,\$window,DelayService){
 
@@ -73,18 +73,6 @@ echo <<<EOF
                             displayName: '收益',
                             widthName: 6
                         })
-                        // {
-                        //     name: '操作',
-                        //     pinnedRight: true,
-                        //     enableFiltering: false,
-                        //     enableColumnResizing: false,
-                        //     width: 120,
-                        //     maxWidth: 2000, minWidth: 120,
-                        //     cellTemplate: '<button type="button" class="btn btn-link" ng-click="grid.appScope.{$samplectrl}LC.single.dealAction(row.entity,grid.appScope.{$samplectrl}LC.batch.getActionVerb(action),action);" ng-repeat="action in row.entity.actions">{{grid.appScope.{$samplectrl}LC.batch.getActionName(action)}}</button>'
-                        // },
-                        // Helper.UiGridHelper.newLog({
-                        //     click : "grid.appScope.{$samplectrl}LC.single.dealAction(row.entity,\'log\');"
-                        // })
                     ],
                     //---------------api---------------------
                     onRegisterApi: function (gridApi) {
@@ -94,17 +82,6 @@ echo <<<EOF
                             console.log("case4");
                             console.log([newPage, pageSize]);
                             var params = {};
-                            // var vipstart = BLC.bdLogSearch.search.keywords.vipstart;
-                            // var vipend = BLC.bdLogSearch.search.keywords.vipend;
-                            // angular.forEach(\$scope.{$samplectrl}LC.grid.options.columnDefs, function (col, key) {
-                            //     if (col.filter) {
-                            //         params[col.field] = col.filter.term;
-                            //     }
-                            // });
-                            // params.vipstart = vipstart;
-                            // params.vipend = vipend;
-                            // BLC.bdLogSearch.search.keywords = angular.copy(params);
-
                             {$samplectrl}LC.{$lowerctrl}Log.load.pagesize = pageSize;
                             {$samplectrl}LC.{$lowerctrl}Log.load.getPage(newPage);
                         });
@@ -175,16 +152,7 @@ echo <<<EOF
                     mode = data.mode;
                 if (mode === 'day') {
                     var dayToCheck = new Date(date).setHours(0,0,0,0);
-
-                    // for (var i = 0; i < \$scope.{$lowerctrl}s.length; i++) {
-                    //     var currentDay = new Date(\$scope.{$lowerctrl}s[i].date).setHours(0,0,0,0);
-                    //
-                    //     if (dayToCheck === currentDay) {
-                    //         return \$scope.{$lowerctrl}s[i].status;
-                    //     }
-                    // }
                 }
-
                 return '';
             }
             // {$samplectrl}LC.{$lowerctrl}LogSearch.search.keywords = new Date();
@@ -231,21 +199,6 @@ echo <<<EOF
             };
 
             {$samplectrl}LC.date.altInputFormats = ['M!/d!/yyyy'];
-
-            // var tomorrow = new Date();
-            // tomorrow.setDate(tomorrow.getDate() + 1);
-            // var afterTomorrow = new Date();
-            // afterTomorrow.setDate(tomorrow.getDate() + 1);
-            // \$scope.{$lowerctrl}s = [
-            //     {
-            //         date: tomorrow,
-            //         status: 'full'
-            //     },
-            //     {
-            //         date: afterTomorrow,
-            //         status: 'partially'
-            //     }
-            // ];
 
             {$samplectrl}LC.{$lowerctrl}LogSearch.search.reset = function(){
                 {$samplectrl}LC.{$lowerctrl}LogSearch.search.keywords = {};
@@ -313,49 +266,6 @@ echo <<<EOF
                     {$samplectrl}LC.batch.actions = [];
                 }
             }
-            {$samplectrl}LC.batch.ciList = [];
-            // batch select
-            {$samplectrl}LC.batch.select = function(ci){
-                // 限制 : 同客户 同月份 同还款账户
-                if(!ci._select){
-
-                }
-                //
-                ci._select = !ci._select;
-
-                {$samplectrl}LC.batch.calcAction();
-            };
-            {$samplectrl}LC.batch.selectAll = function(){
-                if(!{$samplectrl}LC.{$lowerctrl}Log.load.itemList || !{$samplectrl}LC.{$lowerctrl}Log.load.itemList.length){
-                    return;
-                }
-                var isAllSelected = {$samplectrl}LC.batch.isAllSelected();
-                {$samplectrl}LC.{$lowerctrl}Log.load.itemList.forEach(function(ci){
-                    ci._select = !isAllSelected;
-                });
-                {$samplectrl}LC.batch.calcAction();
-            };
-            {$samplectrl}LC.batch.isAllSelected = function(){
-                if(!{$samplectrl}LC.{$lowerctrl}Log.load.itemList || !{$samplectrl}LC.{$lowerctrl}Log.load.itemList.length){
-                    return false;
-                }
-                return {$samplectrl}LC.{$lowerctrl}Log.load.itemList.every(function(ci){
-                    return ci._select;
-                });
-            };
-            {$samplectrl}LC.batch.hasSelected = function(){
-                if(!{$samplectrl}LC.{$lowerctrl}Log.load.itemList || !{$samplectrl}LC.{$lowerctrl}Log.load.itemList.length){
-                    return false;
-                }
-                return {$samplectrl}LC.{$lowerctrl}Log.load.itemList.some(function(ci){
-                    return ci._select;
-                });
-            };
-            {$samplectrl}LC.batch.getSelectedList = function(){
-                return {$samplectrl}LC.{$lowerctrl}Log.load.itemList.filter(function(ci){
-                    return ci._select;
-                });
-            };
 
             {$samplectrl}LC.add{$camelctrl} = function(){
                 var addTab = new Tab({
@@ -427,7 +337,7 @@ echo <<<EOF
             };
             {$samplectrl}LC.init = function () {
 
-
+                {$samplectrl}LC.grid.init();
                 new DelayService().init({
                     selector : "#{$linectrl}-con-"+{$samplectrl}LC.id,
                     done:function () {
@@ -453,7 +363,7 @@ echo <<<EOF
         }
     });
 
-    wukongApp.component("t{$camelctrl}Add",{
+    muumApp.component("t{$camelctrl}Add",{
         templateUrl : "mgr/{$lowerctrl}Add",
         bindings : {
             tab : "=",
@@ -544,7 +454,7 @@ echo <<<EOF
         }
     });
 
-    wukongApp.component("t{$camelctrl}Edit",{
+    muumApp.component("t{$camelctrl}Edit",{
         templateUrl : "mgr/{$lowerctrl}Edit",
         bindings : {
             tab : "=",
@@ -635,7 +545,7 @@ echo <<<EOF
         }
     });
 
-    wukongApp.controller("{$camelctrl}Controller",function(\$scope,Tab,TabCtrl){
+    muumApp.controller("{$camelctrl}Controller",function(\$scope,Tab,TabCtrl){
         var {$camelctrl}HomeCenter = {},{$samplectrl}HC = {$camelctrl}HomeCenter;
 
         {$samplectrl}HC.initList = function(){

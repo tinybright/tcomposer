@@ -5,7 +5,7 @@
     $link = "<?=Yii::app()->createUrl(\"/".$controller."api/edit".$lowCtrl."\")?>";
 ?>
 <div class="page-<?=@$page?>-edit page-operate">
-    <form ng-attr-id="{{'form-<?=@$page?>-edit'+<?=$primary?>EC.id}}" class="form-wukong form-horizontal" action="<?=$link?>">
+    <form ng-attr-id="{{'form-<?=@$page?>-edit'+<?=$primary?>EC.id}}" class="form-muum form-horizontal" action="<?=$link?>">
         <input type="hidden" name="<?=@$page?>[id]" value="{{<?=$primary?>EC.info.id}}">
         <input type="hidden" name="<?=@$page?>[ver]" value="{{<?=$primary?>EC.info.ver}}">
         <div class="form-left pull-left">

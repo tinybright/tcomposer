@@ -1,5 +1,5 @@
 <div class="page-event-edit page-operate page-operate-new">
-    <form ng-attr-id="{{'form-event-edit'+EEC.id}}" class="form-wukong form-horizontal" action="<?=Yii::app()->createUrl("/mgrapi/editevent")?>">
+    <form ng-attr-id="{{'form-event-edit'+EEC.id}}" class="form-muum form-horizontal" action="<?=Yii::app()->createUrl("/mgrapi/editevent")?>">
         <input type="hidden" name="info[id]" value="{{EEC.info.id}}">
         <input type="hidden" name="info[ver]" value="{{EEC.info.ver}}">
         <div class="form-left1 pull-left1 col-md-6 col-md-offset-3">

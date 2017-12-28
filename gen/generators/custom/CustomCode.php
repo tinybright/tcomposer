@@ -3,17 +3,18 @@
 class CustomCode extends CCodeModel
 {
 	public $controller='';
-	public $app='wukong';
+	public $app='muum';
 	public $page='';
 	public $fields = [];
 	public $dbmodel = '';
 	public $btn_import = '';
+	public $list_mode = 'normal';
 
 	public function rules()
 	{
 		return array_merge(parent::rules(), array(
 			array('controller, page', 'filter', 'filter'=>'trim'),
-			array('controller, page,app,fields,btn_import', 'required'),
+			array('controller, page,app,fields,btn_import,list_mode', 'required'),
 			/*array('controller', 'match', 'pattern'=>'/^\w+[\w+\\/]*$/', 'message'=>'{attribute} should only contain word characters and slashes.'),
 			array('page', 'match', 'pattern'=>'/^\w+[\w\s,]*$/', 'message'=>'{attribute} should only contain word characters, spaces and commas.'),*/
 			array('app', 'sticky'),
@@ -210,6 +211,15 @@ class CustomCode extends CCodeModel
             if(Utilities::contain($file,'tpl_')){
                 continue;
             }
+            if($this->list_mode != 'new'){
+                if(Utilities::contain($file,'event-list_new')){
+                    continue;
+                }
+            }else{
+                if(Utilities::contain($file,'event-list')&&!Utilities::contain($file,'event-list_new')){
+                    continue;
+                }
+            }
             //大小写敏感 原始使用Event;
             $isJs = Utilities::contain($file,$key.'.js');
 
@@ -256,9 +266,10 @@ class CustomCode extends CCodeModel
                     $this->render($newFilePath,$params)
                 );
             }else{
-
                 $relativePath = substr($file,strlen($jsTemplatePath));
                 $relativePath = str_replace($key,Utilities::toUnderScore($this->page),$relativePath);
+
+                $relativePath = str_replace('_new.php','.php',$relativePath);
                 $targetViewPath = PathUtil::getPath(['protected','views',$this->controller]);
                 $this->files[]=new CCodeFile(
                     $targetViewPath.$relativePath,

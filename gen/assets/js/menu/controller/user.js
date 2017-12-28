@@ -1,6 +1,6 @@
 $(function () {
-    var wukongApp = angular.module(_MOUDLE_NAME);
-    if(!wukongApp){
+    var muumApp = angular.module(_MOUDLE_NAME);
+    if(!muumApp){
         console.e("no app");
         return;
     }
@@ -39,7 +39,7 @@ $(function () {
         };
     };
     
-    wukongApp.factory("FeatureModalService",function (LoadData,DataSearch,$rootScope) {
+    muumApp.factory("FeatureModalService",function (LoadData,DataSearch,$rootScope) {
         var FMS = function () {
             var FMST = this;
             FMST.config = {};
@@ -90,7 +90,7 @@ $(function () {
         };
         return FMS;
     });
-    wukongApp.controller('ModalInstanceCtrl', function ($uibModalInstance, items,$scope,LoadData,DataSearch) {
+    muumApp.controller('ModalInstanceCtrl', function ($uibModalInstance, items,$scope,LoadData,DataSearch) {
         /*var $ctrl = this;
         $ctrl.items = items;
         $ctrl.selected = {
@@ -143,7 +143,7 @@ $(function () {
         },true);
     });
 
-    wukongApp.controller("MenuEditController",function($scope, $rootScope,$http,$location,$route,$timeout,Helper,$uibModal,$log) {
+    muumApp.controller("MenuEditController",function($scope, $rootScope,$http,$location,$route,$timeout,Helper,$uibModal,$log) {
         var OC = {
             nodeType : {
                 cursor : 0,
@@ -748,7 +748,7 @@ $(function () {
         OC.init();
     });
 
-    wukongApp.controller("FeatureListController",function($scope,$http,$rootScope,MenuCenter,LoadData,DataSearch,$location,Helper,MediaUploadV1){
+    muumApp.controller("FeatureListController",function($scope,$http,$rootScope,MenuCenter,LoadData,DataSearch,$location,Helper,MediaUploadV1){
         var FeatureListCenter = {},FLC = FeatureListCenter;
         FLC.pageCache = {};
         FLC.pageCache.put = function () {
@@ -866,7 +866,7 @@ $(function () {
         FLC.init();
     });
 
-    wukongApp.controller("FeatureAddController",function ($scope,$http,$location,$rootScope,MenuCenter,$routeParams,Helper,MediaUploadV1) {
+    muumApp.controller("FeatureAddController",function ($scope,$http,$location,$rootScope,MenuCenter,$routeParams,Helper,MediaUploadV1) {
         var FeatureAddCenter = {},FAC = FeatureAddCenter;
 
         FAC.getModeByPath = function () {

@@ -293,7 +293,7 @@
         </div>
     </div>
 </div>
-<div class="modal modal-correct modal-bestfi fade" id="modal-import-menu" data-backdrop="true">
+<div class="modal modal-correct modal-muum fade" id="modal-import-menu" data-backdrop="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">

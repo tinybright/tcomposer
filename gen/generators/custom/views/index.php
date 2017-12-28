@@ -28,6 +28,27 @@
 		<?php echo $form->error($model,'controller'); ?>
 	</div>
 
+<div class="row">
+    <?php echo $form->labelEx($model,'list_mode'); ?>
+    <?php echo $form->dropDownList($model,'list_mode',[
+            'normal'=>'普通',
+            'new'=>'新'
+    ]); ?>
+    <div class="tooltip">
+        Controller ID is case-sensitive. Below are some examples:
+        <ul>
+            <li><code>post</code> generates <code>PostController.php</code></li>
+            <li><code>postTag</code> generates <code>PostTagController.php</code></li>
+            <li><code>admin/user</code> generates <code>admin/UserController.php</code>.
+                If the application has an <code>admin</code> module enabled,
+                it will generate <code>UserController</code> within the module instead.
+                Make sure to write module name in the correct case if it has a camelCase name.
+            </li>
+        </ul>
+    </div>
+    <?php echo $form->error($model,'controller'); ?>
+</div>
+
 	<div class="row">
 		<?php echo $form->labelEx($model,'page'); ?>
 		<?php echo $form->textField($model,'page',array('size'=>65,'id'=>'input-page','placeholder'=>'区分大小写 例如NewsCata')); ?>

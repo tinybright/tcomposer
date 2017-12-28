@@ -8,7 +8,7 @@ $linectrl = Utilities::toUnderScore($page);
 $camelctrl = ucfirst($page);
 echo <<<EOF
 <div class="page-{$linectrl}-edit page-operate page-operate-new">
-    <form ng-attr-id="{{'form-{$linectrl}-edit'+{$samplectrl}EC.id}}" class="form-wukong form-horizontal" action="<?=Yii::app()->createUrl("/mgrapi/edit{$lowerctrl}")?>">
+    <form ng-attr-id="{{'form-{$linectrl}-edit'+{$samplectrl}EC.id}}" class="form-muum form-horizontal" action="<?=Yii::app()->createUrl("/mgrapi/edit{$lowerctrl}")?>">
         <input type="hidden" name="info[id]" value="{{{$samplectrl}EC.info.id}}">
         <input type="hidden" name="info[ver]" value="{{{$samplectrl}EC.info.ver}}">
         <div class="form-left1 pull-left1 col-md-6 col-md-offset-3">

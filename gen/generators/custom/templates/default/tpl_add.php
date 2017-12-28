@@ -5,7 +5,7 @@
     $link = "<?=Yii::app()->createUrl(\"/".$controller."api/add".$lowCtrl."\")?>";
 ?>
 <div class="page-<?=@$page?>-add page-operate">
-    <form ng-attr-id="{{'form-<?=@$page?>-add'+<?=$primary?>AC.id}}" class="form-wukong form-horizontal" action="<?=$link?>">
+    <form ng-attr-id="{{'form-<?=@$page?>-add'+<?=$primary?>AC.id}}" class="form-muum form-horizontal" action="<?=$link?>">
         <div class="form-left pull-left">
             <div class="block">
                 <div class="block-head">基本信息</div>

@@ -1,10 +1,10 @@
 $(function () {
-    var wukongApp = angular.module(_MOUDLE_NAME);
-    if(!wukongApp){
+    var muumApp = angular.module(_MOUDLE_NAME);
+    if(!muumApp){
         console.e("no app");
         return;
     }
-    wukongApp.component("tEventList",{
+    muumApp.component("tEventList",{
         templateUrl : "mgr/eventList",
         controller : function($scope,$http,Tab,TabCtrl,$rootScope,LoadData,DataSearch,TimeSelect,FormHelper,Helper,$timeout,uiGridConstants, uiGridPaginationService,ModalService,ScrollLoad,$window,DelayService){
 
@@ -64,18 +64,6 @@ $(function () {
                             displayName: '收益',
                             widthName: 6
                         })
-                        // {
-                        //     name: '操作',
-                        //     pinnedRight: true,
-                        //     enableFiltering: false,
-                        //     enableColumnResizing: false,
-                        //     width: 120,
-                        //     maxWidth: 2000, minWidth: 120,
-                        //     cellTemplate: '<button type="button" class="btn btn-link" ng-click="grid.appScope.ELC.single.dealAction(row.entity,grid.appScope.ELC.batch.getActionVerb(action),action);" ng-repeat="action in row.entity.actions">{{grid.appScope.ELC.batch.getActionName(action)}}</button>'
-                        // },
-                        // Helper.UiGridHelper.newLog({
-                        //     click : "grid.appScope.ELC.single.dealAction(row.entity,\'log\');"
-                        // })
                     ],
                     //---------------api---------------------
                     onRegisterApi: function (gridApi) {
@@ -85,17 +73,6 @@ $(function () {
                             console.log("case4");
                             console.log([newPage, pageSize]);
                             var params = {};
-                            // var vipstart = BLC.bdLogSearch.search.keywords.vipstart;
-                            // var vipend = BLC.bdLogSearch.search.keywords.vipend;
-                            // angular.forEach($scope.ELC.grid.options.columnDefs, function (col, key) {
-                            //     if (col.filter) {
-                            //         params[col.field] = col.filter.term;
-                            //     }
-                            // });
-                            // params.vipstart = vipstart;
-                            // params.vipend = vipend;
-                            // BLC.bdLogSearch.search.keywords = angular.copy(params);
-
                             ELC.eventLog.load.pagesize = pageSize;
                             ELC.eventLog.load.getPage(newPage);
                         });
@@ -166,16 +143,7 @@ $(function () {
                     mode = data.mode;
                 if (mode === 'day') {
                     var dayToCheck = new Date(date).setHours(0,0,0,0);
-
-                    // for (var i = 0; i < $scope.events.length; i++) {
-                    //     var currentDay = new Date($scope.events[i].date).setHours(0,0,0,0);
-                    //
-                    //     if (dayToCheck === currentDay) {
-                    //         return $scope.events[i].status;
-                    //     }
-                    // }
                 }
-
                 return '';
             }
             // ELC.eventLogSearch.search.keywords = new Date();
@@ -222,21 +190,6 @@ $(function () {
             };
 
             ELC.date.altInputFormats = ['M!/d!/yyyy'];
-
-            // var tomorrow = new Date();
-            // tomorrow.setDate(tomorrow.getDate() + 1);
-            // var afterTomorrow = new Date();
-            // afterTomorrow.setDate(tomorrow.getDate() + 1);
-            // $scope.events = [
-            //     {
-            //         date: tomorrow,
-            //         status: 'full'
-            //     },
-            //     {
-            //         date: afterTomorrow,
-            //         status: 'partially'
-            //     }
-            // ];
 
             ELC.eventLogSearch.search.reset = function(){
                 ELC.eventLogSearch.search.keywords = {};
@@ -304,49 +257,6 @@ $(function () {
                     ELC.batch.actions = [];
                 }
             }
-            ELC.batch.ciList = [];
-            // batch select
-            ELC.batch.select = function(ci){
-                // 限制 : 同客户 同月份 同还款账户
-                if(!ci._select){
-
-                }
-                //
-                ci._select = !ci._select;
-
-                ELC.batch.calcAction();
-            };
-            ELC.batch.selectAll = function(){
-                if(!ELC.eventLog.load.itemList || !ELC.eventLog.load.itemList.length){
-                    return;
-                }
-                var isAllSelected = ELC.batch.isAllSelected();
-                ELC.eventLog.load.itemList.forEach(function(ci){
-                    ci._select = !isAllSelected;
-                });
-                ELC.batch.calcAction();
-            };
-            ELC.batch.isAllSelected = function(){
-                if(!ELC.eventLog.load.itemList || !ELC.eventLog.load.itemList.length){
-                    return false;
-                }
-                return ELC.eventLog.load.itemList.every(function(ci){
-                    return ci._select;
-                });
-            };
-            ELC.batch.hasSelected = function(){
-                if(!ELC.eventLog.load.itemList || !ELC.eventLog.load.itemList.length){
-                    return false;
-                }
-                return ELC.eventLog.load.itemList.some(function(ci){
-                    return ci._select;
-                });
-            };
-            ELC.batch.getSelectedList = function(){
-                return ELC.eventLog.load.itemList.filter(function(ci){
-                    return ci._select;
-                });
-            };
 
             ELC.addEvent = function(){
                 var addTab = new Tab({
@@ -418,7 +328,7 @@ $(function () {
             };
             ELC.init = function () {
 
-
+                ELC.grid.init();
                 new DelayService().init({
                     selector : "#event-con-"+ELC.id,
                     done:function () {
@@ -444,7 +354,7 @@ $(function () {
         }
     });
 
-    wukongApp.component("tEventAdd",{
+    muumApp.component("tEventAdd",{
         templateUrl : "mgr/eventAdd",
         bindings : {
             tab : "=",
@@ -535,7 +445,7 @@ $(function () {
         }
     });
 
-    wukongApp.component("tEventEdit",{
+    muumApp.component("tEventEdit",{
         templateUrl : "mgr/eventEdit",
         bindings : {
             tab : "=",
@@ -626,7 +536,7 @@ $(function () {
         }
     });
 
-    wukongApp.controller("EventController",function($scope,Tab,TabCtrl){
+    muumApp.controller("EventController",function($scope,Tab,TabCtrl){
         var EventHomeCenter = {},EHC = EventHomeCenter;
 
         EHC.initList = function(){

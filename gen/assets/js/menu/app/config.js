@@ -1,11 +1,11 @@
 ﻿$(function(){
-	var wukongApp = angular.module(_MOUDLE_NAME);
-	if(!wukongApp){
+	var muumApp = angular.module(_MOUDLE_NAME);
+	if(!muumApp){
 		console.e("no app");
 		return;
 	}
 	// CONFIG ROUTE
-	wukongApp.config(["$routeProvider","$locationProvider","$sceDelegateProvider","$httpProvider",function($routeProvider,$locationProvider,$sceDelegateProvider,$httpProvider) {
+	muumApp.config(["$routeProvider","$locationProvider","$sceDelegateProvider","$httpProvider",function($routeProvider,$locationProvider,$sceDelegateProvider,$httpProvider) {
 		$locationProvider.html5Mode(false).hashPrefix("!");
 		$sceDelegateProvider.resourceUrlWhitelist([
 			"self",

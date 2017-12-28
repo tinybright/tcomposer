@@ -3,7 +3,7 @@
 class ControllerCode extends CCodeModel
 {
 	public $controller='';
-	public $app='wukong';
+	public $app='muum';
 	public $page='test';
 	public $fields = [];
 

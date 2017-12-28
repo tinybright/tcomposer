@@ -5,8 +5,6 @@ echo <<<EOF
 
 class $name {
 
-    const SERVICE_NAME = 'com.airi.cloud.user.service.UserService';
-
     public static function register(\$username,\$password){
         if(!\$username){
             return ['ret'=>'FAIL','data'=>'用户名不能为空'];
